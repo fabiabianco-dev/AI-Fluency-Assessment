@@ -21,9 +21,22 @@ Start with [`docs/01-diagnosis.md`](docs/01-diagnosis.md).
 | Path | What it is |
 |---|---|
 | `docs/01-diagnosis.md` | Evidence-based diagnosis of the current instrument |
-| `docs/02-design-decisions-v2.md` | Proposed v2 architecture — awaiting direction |
+| `docs/02-design-decisions-v2.md` | Nomenclature, adaptive-capacity layering, placement bands, sequencing |
+| `docs/03-capability-map-as-driver.md` | Revised architecture; adaptive capacity alignment audit |
+| `docs/04-range-evaluator-alignment.md` | Divergence between the two RANGE instruments |
+| `docs/05-partner-spec-assessment.md` | Critical review of the external alignment spec |
 | `analysis/analyze_responses.py` | Reproduces every statistic in the diagnosis |
 | `baseline/` | Snapshot of the working system as of July 29, 2026 |
+
+## Before August 5 — verify this
+
+`GAS_URL` is set from an Apps Script template expression
+(`'<?= ScriptApp.getService().getUrl() ?>'`, `BU_AI_Fluency_Interactive.html:2066`). If the page
+is not served as a GAS HTML template it stays a literal string, `fetch` fails, and
+`.catch(() => {})` at `:2970` swallows the error. With `mode: 'no-cors'` there is **no signal
+that submissions are being lost** — and a lost baseline sitting cannot be re-derived.
+
+Test end-to-end against the real deployment and add a visible confirmation state on success.
 
 ### Baseline snapshot
 
