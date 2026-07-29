@@ -141,6 +141,33 @@ SCORING_JS = """
     }
 """
 
+INTRO_CARD_JS = """    function renderIntroCard(dimId) {
+      const domain = DOMAINS.find(d => d.id === dimId);
+      const total = ITEM_BANK_V2[dimId].questions.length;
+      return `
+        <div style="margin-top:16px;">
+          <div style="font-size:0.88rem;line-height:1.7;color:var(--off-white);margin-bottom:14px;padding:16px 18px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid var(--rubine);">${domain.desc}</div>
+          <div style="font-size:0.86rem;line-height:1.7;color:var(--text-mid);margin-bottom:16px;padding:14px 16px;background:rgba(206,0,88,0.05);border:1px solid rgba(206,0,88,0.18);border-radius:8px;">
+            <span class="font-mono" style="display:block;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--rubine-light);margin-bottom:7px;">How to answer</span>
+            ${HOW_TO_ANSWER[dimId]}
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:18px;">${total} questions &nbsp;·&nbsp; Pick what actually happened — no option is the wrong one</div>
+          <button class="begin-rating-btn" data-action="begin-dim" data-dim="${dimId}" style="padding:10px 22px;background:transparent;border:1px solid rgba(206,0,88,0.5);color:var(--rubine-light);border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all 0.15s;">Begin →</button>
+        </div>
+      `;
+    }
+"""
+
+WHATS_NEXT_JS = """        // ── What happens next ───────────────────────────────────────────────
+        // Fabia's copy. Programs ARE ready — nothing here may suggest otherwise.
+        const whatsNextHTML = `
+          <div style="margin-top:28px;padding:16px 18px;background:rgba(206,0,88,0.06);border:1px solid rgba(206,0,88,0.2);border-radius:10px;">
+            <div class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--rubine-light);margin-bottom:10px;">What happens next</div>
+            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.85);margin:0 0 12px;">Your answers go to the L&amp;D team, who use them to recommend the right program and curate your path in Coursera — so you can close these skills quickly instead of hunting for courses yourself. The programs are ready. Invitations are coming shortly.</p>
+            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.75);margin:0;">If you'd like help sooner, or there's a skill you want to develop that didn't come through in your results, message the BU Learning team (Fabia) in Slack. She can take it into account when making recommendations for the courses and programs for you in Coursera.</p>
+          </div>`;
+"""
+
 QUESTION_CARD_JS = """    function renderStatementCard(dimId) {
       const state = dimState[dimId];
       if (!state) return '';
@@ -153,7 +180,7 @@ QUESTION_CARD_JS = """    function renderStatementCard(dimId) {
         <div style="margin-top:16px;">
           <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">Question ${qNum} of ${total} &nbsp;·&nbsp; ${item.skill}</div>
           <div style="font-size:0.97rem;line-height:1.65;color:var(--off-white);margin-bottom:8px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid var(--rubine);">${item.stem}</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin:14px 0 10px;">Pick what was most true</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin:14px 0 10px;">Pick the one closest to what you actually did</div>
           <div style="display:flex;flex-direction:column;gap:7px;">
             ${item.anchors.map((a, i) => `<button class="anchor-btn" data-action="rate" data-dim="${dimId}" data-rating="${i}">${a}</button>`).join('')}
           </div>
@@ -196,6 +223,7 @@ SKILL_GAP_RENDER_JS = """        // ── Skills to develop next ────�
           <div class="font-mono" style="color:var(--text-muted);margin-bottom:20px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;">Where to go next</div>
           ${limitingHTML}
           ${gapsHTML}
+          ${whatsNextHTML}
         `;
       }
     }
@@ -238,12 +266,32 @@ def main():
     items = json.loads(ITEMS.read_text())
     bank = {k: v for k, v in items.items() if not k.startswith("_")}
 
-    # 1. ITEM_BANK -> ITEM_BANK_V2
+    # 1. ITEM_BANK -> ITEM_BANK_V2 (+ per-dimension answering instructions)
+    how_to = {k: v["_howToAnswer"] for k, v in bank.items()}
     bank_js = ("    const ITEM_BANK_V2 = "
                + json.dumps(bank, indent=6, ensure_ascii=False)
+               + ";\n\n    const HOW_TO_ANSWER = "
+               + json.dumps(how_to, indent=6, ensure_ascii=False)
                + ";\n")
     html = replace_span(html, "    const ITEM_BANK = {", r"^    \};?$",
                         bank_js, "ITEM_BANK")
+
+    # 1b. Framework copy — learning resources, not programs; drop the
+    #     "demonstrate not studied" line (Fabia).
+    html = html.replace(
+        "connects gaps to specific programs. Your level is determined by what "
+        "you can demonstrate — not what you've studied.",
+        "connects gaps to specific learning resources.", 1)
+    html = html.replace(
+        "Your level in any RANGE dimension is what you can demonstrate — not "
+        "what you've studied. Be honest with yourself. This is a development "
+        "map, not a performance review.",
+        "Answer for what you actually did over the last two weeks. Be honest "
+        "with yourself — this is a development map, not a performance review.", 1)
+
+    # 1c. Per-dimension "How to answer" guidance
+    html = replace_span(html, "    function renderIntroCard(dimId) {",
+                        r"^    \}$", INTRO_CARD_JS, "renderIntroCard")
 
     # 2. Engine -> gated anchor scoring
     html = replace_span(html,
@@ -260,6 +308,11 @@ def main():
     #     engine, and puts the skill-gap output in its place.
     html = re.sub(r"[ ]*// ─── Full BetterUp Coursera Catalog.*?\n[ ]*const BU_CATALOG = \[.*?\];\n",
                   "", html, count=1, flags=re.S)
+
+    #     Program card out too — no program recommendations in the output at all.
+    html = replace_span(html, "        // ── AFS Next logic (3+ of 5 dims at Pilot or above) ──",
+                        r"^          programHTML = '';\n        \}$",
+                        WHATS_NEXT_JS, "program card")
 
     html = replace_span(html, "        // ── Course recommendations — 3 tiers ──",
                         r"^          \$\{collectionHTML\}\n        `;\n      \}\n    \}$",
