@@ -176,11 +176,18 @@ QUESTION_CARD_JS = """    function renderStatementCard(dimId) {
       if (!item) return renderCompletionState(dimId);
       const qNum = state.count + 1;
       const total = state.queue.length;
+      // Order is deliberate (Fabia): the skill leads and is prominent, then one
+      // plain sentence saying what is being assessed, then the scenario, then the
+      // options. Previously the skill sat in small muted text beside "Question 2
+      // of 3", so the framing that makes the options legible was the least
+      // visible thing on the card.
       return `
         <div style="margin-top:16px;">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">Question ${qNum} of ${total} &nbsp;·&nbsp; ${item.skill}</div>
-          <div style="font-size:0.97rem;line-height:1.65;color:var(--off-white);margin-bottom:8px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid var(--rubine);">${item.stem}</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin:14px 0 10px;">Pick the one closest to what you actually did</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;">Question ${qNum} of ${total}</div>
+          <div class="font-display" style="font-size:1.28rem;line-height:1.3;color:var(--off-white);margin-bottom:7px;">${item.skill}</div>
+          <div style="font-size:0.88rem;line-height:1.6;color:var(--rubine-light);margin-bottom:18px;">${item.focus}</div>
+          <div style="font-size:0.97rem;line-height:1.65;color:var(--off-white);padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid var(--rubine);">${item.stem}</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin:16px 0 10px;">Pick the one closest to what you actually did</div>
           <div style="display:flex;flex-direction:column;gap:7px;">
             ${item.anchors.map((a, i) => `<button class="anchor-btn" data-action="rate" data-dim="${dimId}" data-rating="${i}">${a}</button>`).join('')}
           </div>

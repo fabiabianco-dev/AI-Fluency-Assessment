@@ -1493,6 +1493,7 @@
                   {
                         "id": "R1",
                         "skill": "Curiosity under uncertainty",
+                        "focus": "Whether you bring AI to things you haven't tried it on before.",
                         "stem": "Think of a task in the last two weeks that you hadn't tried with AI before. What was most true?",
                         "anchors": [
                               "I stayed with the kinds of tasks I already knew it could handle.",
@@ -1514,6 +1515,7 @@
                   {
                         "id": "R2",
                         "skill": "Asking the right questions",
+                        "focus": "How well you set AI up to give you something genuinely useful.",
                         "stem": "Think of something you needed from Claude in the last two weeks that really mattered. What was most true about how you asked for it?",
                         "anchors": [
                               "I described the task and took what came back.",
@@ -1535,6 +1537,7 @@
                   {
                         "id": "R3",
                         "skill": "Adaptation to a moving landscape",
+                        "focus": "Whether you keep up as what AI can do keeps changing.",
                         "stem": "AI capabilities keep changing. In the last two weeks, what was most true for you?",
                         "anchors": [
                               "I hadn't really noticed anything change.",
@@ -1567,7 +1570,8 @@
             "questions": [
                   {
                         "id": "A1",
-                        "skill": "Persistence — does anything outlive the conversation",
+                        "skill": "Persistence — what outlives the conversation",
+                        "focus": "Whether your AI work leaves anything behind that keeps working.",
                         "stem": "Think about the work you did with AI in the last two weeks. What was most true about what came out of it?",
                         "anchors": [
                               "Nothing I made outlives the conversation it happened in.",
@@ -1589,6 +1593,7 @@
                   {
                         "id": "A2",
                         "skill": "Process mapping",
+                        "focus": "Whether you understand how work actually runs before you automate it.",
                         "stem": "Think of a piece of recurring work you tried to speed up or automate with AI in the last two weeks. What was most true about what you did first?",
                         "anchors": [
                               "I didn't change any recurring work.",
@@ -1610,6 +1615,7 @@
                   {
                         "id": "A3",
                         "skill": "Systems thinking",
+                        "focus": "How far you look when your change touches a wider process.",
                         "stem": "Think of a time in the last two weeks when you changed a step in a process because of something you built or automated with AI. What was most true about how far you looked?",
                         "anchors": [
                               "I changed my own step, and that was the scope of it.",
@@ -1643,6 +1649,7 @@
                   {
                         "id": "N1",
                         "skill": "Verification",
+                        "focus": "How you check AI output before you rely on it.",
                         "_note": "Anchors are Fabia's own wording, near-verbatim.",
                         "stem": "Think of something Claude gave you in the last two weeks that you were going to act on. What was most true about how you checked it?",
                         "anchors": [
@@ -1665,6 +1672,7 @@
                   {
                         "id": "N2",
                         "skill": "Restraint — knowing when not to use AI",
+                        "focus": "Knowing when AI is not the right tool for the job.",
                         "stem": "In the last two weeks, when you were deciding whether to use AI for something, what was most true?",
                         "anchors": [
                               "If AI could plausibly do it, I used AI.",
@@ -1686,6 +1694,7 @@
                   {
                         "id": "N3",
                         "skill": "Choosing the approach — rule, automation, or agent",
+                        "focus": "Picking the right mechanism — a simple rule, an automation, or something agentic.",
                         "stem": "Think of something in the last two weeks you wanted AI to handle repeatedly, without you running it each time. What was most true about how you set it up?",
                         "anchors": [
                               "I didn't have anything like that.",
@@ -1719,6 +1728,7 @@
                   {
                         "id": "G1",
                         "skill": "Transfer across contexts",
+                        "focus": "Whether what you figure out with AI travels beyond where you found it.",
                         "stem": "Think of a way of using AI that you figured out in one part of your job in the last two weeks. What was most true about where it ended up?",
                         "anchors": [
                               "It stayed where it was.",
@@ -1740,6 +1750,7 @@
                   {
                         "id": "G2",
                         "skill": "Consequence design — adoption asymmetry",
+                        "focus": "What your AI changes do to the people and teams around you.",
                         "_note": "Fabia: what happens when your team adopts and the teams around it don't.",
                         "stem": "Think of a time in the last two weeks when your way of working changed because of something you built with AI. What was most true about the people it affected?",
                         "anchors": [
@@ -1762,6 +1773,7 @@
                   {
                         "id": "G3",
                         "skill": "User accessibility",
+                        "focus": "Whether someone else can use what you built without you there.",
                         "stem": "Think of something you built with AI in the last two weeks that someone else might use. What was most true about how you built it?",
                         "anchors": [
                               "I built it for me.",
@@ -1795,7 +1807,8 @@
             "questions": [
                   {
                         "id": "E1",
-                        "skill": "Quality — assessment vs. management",
+                        "skill": "Assessing and managing quality",
+                        "focus": "How you know AI output is good, not just that it looks good.",
                         "stem": "Think of something you shipped with AI's help in the last two weeks. What was most true about how you judged whether it was good?",
                         "anchors": [
                               "I went by whether it looked right.",
@@ -1816,7 +1829,8 @@
                   },
                   {
                         "id": "E2",
-                        "skill": "Protecting data quality — mitigating slop",
+                        "skill": "Protecting data quality and mitigating slop",
+                        "focus": "Protecting shared docs and data from AI filler and error.",
                         "stem": "Think of AI output that went into something lasting in the last two weeks — a shared doc, a dataset, a system. What was most true?",
                         "anchors": [
                               "I hadn't thought about it in those terms.",
@@ -1838,6 +1852,7 @@
                   {
                         "id": "E3",
                         "skill": "Sustainability and ethical ownership",
+                        "focus": "What happens to your AI builds over time, and who is accountable.",
                         "stem": "Think of something you've built with AI that other people now rely on. What was most true in the last two weeks?",
                         "anchors": [
                               "I don't have anything that others rely on.",
@@ -2506,11 +2521,18 @@
       if (!item) return renderCompletionState(dimId);
       const qNum = state.count + 1;
       const total = state.queue.length;
+      // Order is deliberate (Fabia): the skill leads and is prominent, then one
+      // plain sentence saying what is being assessed, then the scenario, then the
+      // options. Previously the skill sat in small muted text beside "Question 2
+      // of 3", so the framing that makes the options legible was the least
+      // visible thing on the card.
       return `
         <div style="margin-top:16px;">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">Question ${qNum} of ${total} &nbsp;·&nbsp; ${item.skill}</div>
-          <div style="font-size:0.97rem;line-height:1.65;color:var(--off-white);margin-bottom:8px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid var(--rubine);">${item.stem}</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin:14px 0 10px;">Pick the one closest to what you actually did</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:7px;">Question ${qNum} of ${total}</div>
+          <div class="font-display" style="font-size:1.28rem;line-height:1.3;color:var(--off-white);margin-bottom:7px;">${item.skill}</div>
+          <div style="font-size:0.88rem;line-height:1.6;color:var(--rubine-light);margin-bottom:18px;">${item.focus}</div>
+          <div style="font-size:0.97rem;line-height:1.65;color:var(--off-white);padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid var(--rubine);">${item.stem}</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin:16px 0 10px;">Pick the one closest to what you actually did</div>
           <div style="display:flex;flex-direction:column;gap:7px;">
             ${item.anchors.map((a, i) => `<button class="anchor-btn" data-action="rate" data-dim="${dimId}" data-rating="${i}">${a}</button>`).join('')}
           </div>
