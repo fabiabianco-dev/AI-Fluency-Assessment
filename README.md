@@ -18,14 +18,21 @@ Start with [`docs/01-diagnosis.md`](docs/01-diagnosis.md).
 
 ## Contents
 
+**North Star:** place people into the right program by identifying the skills best suited to where
+they are in their journey right now. The retake is removed — this is a single-sitting placement
+instrument and makes no claims about movement over time.
+
 | Path | What it is |
 |---|---|
+| `docs/00-role-and-charter.md` | Scope, ownership boundaries, and how this work runs |
 | `docs/01-diagnosis.md` | Evidence-based diagnosis of the current instrument |
 | `docs/02-design-decisions-v2.md` | Nomenclature, adaptive-capacity layering, placement bands, sequencing |
 | `docs/03-capability-map-as-driver.md` | Revised architecture; adaptive capacity alignment audit |
 | `docs/04-range-evaluator-alignment.md` | Divergence between the two RANGE instruments |
 | `docs/05-partner-spec-assessment.md` | Critical review of the external alignment spec |
 | `analysis/analyze_responses.py` | Reproduces every statistic in the diagnosis |
+| `analysis/build_skill_spine.py` | Generates assessment content from the capability map |
+| `content/skill-spine.json` | Generated skill spine — the single source of truth for items |
 | `baseline/` | Snapshot of the working system as of July 29, 2026 |
 
 ## Before August 5 — verify this

@@ -133,6 +133,86 @@ both wrong and a breach of the privacy promise the results email already makes.
 
 ---
 
+## 3b. The non-AI skill layer — measured, and the result is worse than expected
+
+Fabia's list of *"skills that are not necessarily AI-related but yield better AI builds"*, tagged
+across all 139 skills by `analysis/build_skill_spine.py`:
+
+| Non-AI skill | Skills tagged | |
+|---|---|---|
+| Workflow design | 14 | ✅ |
+| Quality assurance | 9 | ✅ |
+| Systemic adoption | 5 | ⚠️ thin |
+| Change management | 4 | ⚠️ thin |
+| User accessibility | 1 | ⚠️ near-absent |
+| **Systems thinking** | **0** | ❌ |
+| **Process mapping** | **0** | ❌ |
+| **Process design** | **0** | ❌ |
+
+### Why the three zeros matter more than they look
+
+These are not obscure omissions. They are **the skills the live programs actually teach**:
+
+- **"Systems Thinking for AI & Automation"** is one of the three foundations inside
+  *Expand Your RANGE* — the entry-point program. Systems thinking appears **nowhere** in the
+  capability map.
+- **"Map before you automate — automate before you go agentic"** is the stated core sequence of
+  *Augment & Automate*. Neither process mapping nor process design exists in the map.
+
+So the capability map cannot describe what two of the three Coursera paths develop. If the map
+drives the assessment, the assessment cannot tell someone they need the very skill the program
+they're being routed into exists to build.
+
+This is the strongest argument yet for Fabia's instinct. The gap is not that the assessment
+recommends the wrong courses — it is that the underlying skill model has no vocabulary for the
+foundational, non-AI competencies that determine whether an AI build is any good.
+
+### Recommended additions
+
+| Dim | Transition | Skill | In Practice |
+|---|---|---|---|
+| A | Pre-Pilot → Pilot | **Process mapping** | Draw how a recurring process actually runs today — every step, handoff and decision — before changing any of it. |
+| A | Pre-Pilot → Pilot | **Systems thinking** | Trace how a change in one step affects the steps downstream, before you automate anything. |
+| A | Pilot → Builder | **Process design** | Redesign a process around what AI makes possible, rather than bolting AI onto the existing shape. |
+| A | Pilot → Builder | **Second-order consequences** | Name what your automation breaks or shifts for someone else before you deploy it. |
+| G | Pilot → Builder | **User accessibility** | Build so that someone with less context than you can use it without asking you how. |
+| G | Pilot → Builder | **Adoption design** | Plan how a build gets adopted — not just how it gets finished. |
+
+`User accessibility` currently has exactly one tagged skill (`Usability Testing`, N Pilot →
+Builder), which is about *testing before deploying* rather than *designing for the user*. Given
+that Autonomy's whole standard is the Still Running Test — can someone else run it without you —
+accessibility is load-bearing and under-represented.
+
+### Readiness factor coverage, measured
+
+Same script, against Khoa's factors:
+
+| Labs factor | Skills tagged | |
+|---|---|---|
+| Championing | 26 | ✅ |
+| Calibration — verification | 17 | ✅ |
+| Engagement | 7 | ✅ |
+| Job crafting | 7 | ⚠️ framed as process efficiency |
+| **Calibration — routing** | **4** | ⚠️ thin, and it's the strongest predictor |
+| **AI optimism** | **0** | ❌ |
+| **AI-user identity** | **0** | ❌ |
+
+Confirms the audit in §3 with counts rather than assertion. Calibration's verification half
+outweighs its routing half more than 4:1, and the routing half is what Khoa's data says predicts
+actual AI literacy.
+
+### Other defects the extraction found
+
+- **`Decision Making` is duplicated** in N, Pre-Pilot → Pilot — identical skill name and
+  identical `In Practice` text on two rows. Confirmed programmatically.
+- **32 of 139 skills still reference AFS** in `Cert Pathway`. Since programs are coming out of
+  learner-facing output, this field needs rewriting or suppressing before the map feeds the
+  assessment.
+- **`ChatGPT`** was the only vendor-named skill; renamed to **`Applied AI delivery`** with the
+  behaviour rewritten to reference Claude.
+
+---
+
 ## 4. Inconsistencies found in the map
 
 1. **`ChatGPT` is a named skill** (E1, Pre-Pilot → Pilot): *"Complete a real work task using

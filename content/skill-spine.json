@@ -1,0 +1,1958 @@
+{
+  "source": "BU_AI_Capability_Map_FY27.xlsx",
+  "generated_by": "analysis/build_skill_spine.py",
+  "skill_count": 139,
+  "transitions": [
+    "Pre-Pilot → Pilot",
+    "Pilot → Builder",
+    "Builder → Multiplier"
+  ],
+  "removals_applied": {
+    "chatgpt_openai_skills": [],
+    "renamed": {
+      "ChatGPT": "Applied AI delivery"
+    },
+    "reviewer_columns_dropped": [
+      "Lee (RANGE)",
+      "Gail (TPS Priority)",
+      "Notes"
+    ]
+  },
+  "defects": {
+    "duplicate_rows": [
+      {
+        "dim": "N",
+        "transition": "Pre-Pilot → Pilot",
+        "skill": "Decision Making"
+      }
+    ],
+    "cert_pathway_still_references_afs": [
+      "AI Workflows",
+      "Workflow Management",
+      "Project Planning",
+      "Goal Setting",
+      "Automation",
+      "Business Process Improvement",
+      "Goal Setting",
+      "Decision Making",
+      "Needs Assessment",
+      "AI Enablement",
+      "Problem Solving",
+      "Critical Thinking",
+      "Quality Management",
+      "Risk Assessment",
+      "Decision Making",
+      "Verification habits",
+      "Communication",
+      "Teaching",
+      "Persuasive Communication",
+      "Internal Communications",
+      "Prompt Engineering",
+      "Generative AI",
+      "Applied AI delivery",
+      "Content Creation",
+      "Instructional Design",
+      "Communication",
+      "Responsible AI",
+      "Business Ethics",
+      "Trustworthiness",
+      "Security Awareness",
+      "Data Ethics",
+      "Accountability"
+    ]
+  },
+  "coverage": {
+    "by_dim_transition": {
+      "R | Pre-Pilot → Pilot": 6,
+      "R | Pilot → Builder": 7,
+      "R | Builder → Multiplier": 4,
+      "A | Pre-Pilot → Pilot": 6,
+      "A | Pilot → Builder": 9,
+      "A | Builder → Multiplier": 7,
+      "N | Pre-Pilot → Pilot": 10,
+      "N | Pilot → Builder": 14,
+      "N | Builder → Multiplier": 11,
+      "G | Pre-Pilot → Pilot": 4,
+      "G | Pilot → Builder": 11,
+      "G | Builder → Multiplier": 8,
+      "E | Pre-Pilot → Pilot": 12,
+      "E | Pilot → Builder": 18,
+      "E | Builder → Multiplier": 12
+    },
+    "readiness_factors": {
+      "engagement": 7,
+      "job_crafting": 7,
+      "championing": 26,
+      "calibration_route": 4,
+      "calibration_verify": 17
+    },
+    "non_ai_layer": {
+      "workflow design": 14,
+      "change management": 4,
+      "systemic adoption": 5,
+      "quality assurance": 9,
+      "user accessibility": 1
+    },
+    "gaps": {
+      "readiness_factors": [
+        "optimism",
+        "identity"
+      ],
+      "non_ai_layer": [
+        "systems thinking",
+        "process mapping",
+        "process design"
+      ]
+    }
+  },
+  "skills": [
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Generative AI",
+      "in_practice": "Distinguish between what AI can and cannot do — and apply that to one real task before fully understanding the tool.",
+      "cert_pathway": "— (foundational exposure; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Artificial Intelligence",
+      "in_practice": "Describe what AI systems do well and where they fail; use that judgment to decide when to try them.",
+      "cert_pathway": "— (foundational exposure; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Curiosity",
+      "in_practice": "Initiate an AI experiment without waiting for permission or a perfect plan.",
+      "cert_pathway": "— (foundational exposure; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "engagement"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Experimentation",
+      "in_practice": "Try something new with AI, name what failed, and adjust — without needing the first attempt to work.",
+      "cert_pathway": "— (foundational exposure; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "engagement"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "AI Enablement",
+      "in_practice": "Identify at least one task in your daily work where AI creates real leverage and act on it.",
+      "cert_pathway": "— (foundational exposure; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "AI Workflows",
+      "in_practice": "Apply AI to a complete task start to finish — not just one isolated step.",
+      "cert_pathway": "— (foundational exposure; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pilot → Builder",
+      "skill": "Emerging Technologies",
+      "in_practice": "Track what AI can do now that it couldn't six months ago and apply at least one new capability to your work.",
+      "cert_pathway": "AI Foundations for Business Professionals; Harnessing AI for Business Impact; AI For Business Productivity – 2026",
+      "functions": "All functions",
+      "readiness_factors": [
+        "engagement"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pilot → Builder",
+      "skill": "Digital Transformation",
+      "in_practice": "Situate your AI work in the organization's larger shift — explain why it matters beyond your own productivity.",
+      "cert_pathway": "AI Foundations for Business Professionals; Harnessing AI for Business Impact; AI For Business Productivity – 2026",
+      "functions": "All functions",
+      "readiness_factors": [
+        "job_crafting"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pilot → Builder",
+      "skill": "Adaptability",
+      "in_practice": "Update your approach when something stops working — without needing a directive to change.",
+      "cert_pathway": "AI Foundations for Business Professionals; Harnessing AI for Business Impact; AI For Business Productivity – 2026",
+      "functions": "All functions",
+      "readiness_factors": [
+        "engagement"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pilot → Builder",
+      "skill": "Innovation",
+      "in_practice": "Generate original ideas for how AI could change how your team works, not just how you work.",
+      "cert_pathway": "AI Foundations for Business Professionals; Harnessing AI for Business Impact; AI For Business Productivity – 2026",
+      "functions": "All functions",
+      "readiness_factors": [
+        "engagement"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pilot → Builder",
+      "skill": "Creativity",
+      "in_practice": "Use AI as a creative partner — push back on its outputs, recombine ideas, produce work that is distinctly yours.",
+      "cert_pathway": "AI Foundations for Business Professionals; Harnessing AI for Business Impact; AI For Business Productivity – 2026",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pilot → Builder",
+      "skill": "Organizational Change",
+      "in_practice": "Recognize resistance to AI adoption and navigate it without making it personal.",
+      "cert_pathway": "AI Foundations for Business Professionals; Harnessing AI for Business Impact; AI For Business Productivity – 2026",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "change management",
+        "systemic adoption"
+      ]
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Pilot → Builder",
+      "skill": "Market Trend",
+      "in_practice": "Explain how AI is changing competitive expectations in your function and what that requires of you.",
+      "cert_pathway": "AI Foundations for Business Professionals; Harnessing AI for Business Impact; AI For Business Productivity – 2026",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Builder → Multiplier",
+      "skill": "Innovation (organizational)",
+      "in_practice": "Create conditions for others to experiment — make it feel safe and worth it, not mandated.",
+      "cert_pathway": "Generative AI Leadership & Strategy; AI Leadership & Strategic Implementation; Executive AI Leadership Mastery; Navigating Generative AI for Leaders",
+      "functions": "Leaders, AI Champions, Senior ICs",
+      "readiness_factors": [
+        "engagement"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Builder → Multiplier",
+      "skill": "Trend Analysis",
+      "in_practice": "Read where AI capability is heading and position your function before the change arrives.",
+      "cert_pathway": "Generative AI Leadership & Strategy; AI Leadership & Strategic Implementation; Executive AI Leadership Mastery; Navigating Generative AI for Leaders",
+      "functions": "Leaders, AI Champions, Senior ICs",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Builder → Multiplier",
+      "skill": "Digital Transformation (leadership level)",
+      "in_practice": "Own a visible piece of your function's AI transformation — not just participate in it.",
+      "cert_pathway": "Generative AI Leadership & Strategy; AI Leadership & Strategic Implementation; Executive AI Leadership Mastery; Navigating Generative AI for Leaders",
+      "functions": "Leaders, AI Champions, Senior ICs",
+      "readiness_factors": [
+        "championing",
+        "job_crafting"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "R",
+      "dimension": "Reach",
+      "sub_competency": "Experimentation Courage + Continuous Adaptation",
+      "transition": "Builder → Multiplier",
+      "skill": "Organizational Change (leadership level)",
+      "in_practice": "Design change that sticks after you stop pushing.",
+      "cert_pathway": "Generative AI Leadership & Strategy; AI Leadership & Strategic Implementation; Executive AI Leadership Mastery; Navigating Generative AI for Leaders",
+      "functions": "Leaders, AI Champions, Senior ICs",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": [
+        "change management"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "AI Workflows",
+      "in_practice": "Build a complete, repeatable AI workflow for one task you own — start to finish, without help.",
+      "cert_pathway": "— (AFS Next prerequisite: 20 days consistent usage; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Workflow Management",
+      "in_practice": "Document how a workflow runs so someone else could follow it without asking you.",
+      "cert_pathway": "— (AFS Next prerequisite: 20 days consistent usage; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Project Planning",
+      "in_practice": "Structure an AI-assisted project with clear inputs, outputs, and checkpoints before starting.",
+      "cert_pathway": "— (AFS Next prerequisite: 20 days consistent usage; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Goal Setting",
+      "in_practice": "Translate a desired outcome into a specific AI task before opening any tool.",
+      "cert_pathway": "— (AFS Next prerequisite: 20 days consistent usage; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_route"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Automation",
+      "in_practice": "Identify which part of a recurring task could run without your active involvement.",
+      "cert_pathway": "— (AFS Next prerequisite: 20 days consistent usage; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "job_crafting"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Business Process Improvement",
+      "in_practice": "Show the before/after: one workflow AI made meaningfully better, not just faster.",
+      "cert_pathway": "— (AFS Next prerequisite: 20 days consistent usage; no cert readiness yet)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "job_crafting"
+      ],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pilot → Builder",
+      "skill": "Automation",
+      "in_practice": "Build something that runs without you — prove it with 2+ active users who don't need you to operate it.",
+      "cert_pathway": "GenAI for Business Process Automation; Generative AI for Project Managers (IBM); Generative AI for Business Analysts (IBM); AI For Business Productivity – 2026",
+      "functions": "All functions — deeper for Ops, PM, CS, Sales",
+      "readiness_factors": [
+        "job_crafting"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pilot → Builder",
+      "skill": "Business Process Automation",
+      "in_practice": "Redesign a team workflow so AI handles a defined portion end-to-end.",
+      "cert_pathway": "GenAI for Business Process Automation; Generative AI for Project Managers (IBM); Generative AI for Business Analysts (IBM); AI For Business Productivity – 2026",
+      "functions": "All functions — deeper for Ops, PM, CS, Sales",
+      "readiness_factors": [
+        "job_crafting"
+      ],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pilot → Builder",
+      "skill": "Workflow Management (systems level)",
+      "in_practice": "Version, document, and hand off a workflow so it outlasts your involvement.",
+      "cert_pathway": "GenAI for Business Process Automation; Generative AI for Project Managers (IBM); Generative AI for Business Analysts (IBM); AI For Business Productivity – 2026",
+      "functions": "All functions — deeper for Ops, PM, CS, Sales",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pilot → Builder",
+      "skill": "AI Orchestration",
+      "in_practice": "Connect multiple AI tools or steps so they operate as a system, not a collection of isolated tasks.",
+      "cert_pathway": "GenAI for Business Process Automation; Generative AI for Project Managers (IBM); Generative AI for Business Analysts (IBM); AI For Business Productivity – 2026",
+      "functions": "All functions — deeper for Ops, PM, CS, Sales",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pilot → Builder",
+      "skill": "Scalability",
+      "in_practice": "Design a workflow for 10 users from day one — not just for yourself.",
+      "cert_pathway": "GenAI for Business Process Automation; Generative AI for Project Managers (IBM); Generative AI for Business Analysts (IBM); AI For Business Productivity – 2026",
+      "functions": "All functions — deeper for Ops, PM, CS, Sales",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "systemic adoption",
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pilot → Builder",
+      "skill": "Project Management",
+      "in_practice": "Manage an AI system build like a product: phases, owners, a definition of done.",
+      "cert_pathway": "GenAI for Business Process Automation; Generative AI for Project Managers (IBM); Generative AI for Business Analysts (IBM); AI For Business Productivity – 2026",
+      "functions": "All functions — deeper for Ops, PM, CS, Sales",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pilot → Builder",
+      "skill": "Resource Management",
+      "in_practice": "Allocate human and AI effort deliberately — decide what each should own before starting.",
+      "cert_pathway": "GenAI for Business Process Automation; Generative AI for Project Managers (IBM); Generative AI for Business Analysts (IBM); AI For Business Productivity – 2026",
+      "functions": "All functions — deeper for Ops, PM, CS, Sales",
+      "readiness_factors": [
+        "calibration_route"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pilot → Builder",
+      "skill": "Data Pipelines",
+      "in_practice": "Explain how information flows through an AI system and where errors typically enter.",
+      "cert_pathway": "GenAI for Business Process Automation; Generative AI for Project Managers (IBM); Generative AI for Business Analysts (IBM); AI For Business Productivity – 2026",
+      "functions": "All functions — deeper for Ops, PM, CS, Sales",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Pilot → Builder",
+      "skill": "Organizational Skills",
+      "in_practice": "Maintain the operational discipline that keeps a system reliable after the excitement of building fades.",
+      "cert_pathway": "GenAI for Business Process Automation; Generative AI for Project Managers (IBM); Generative AI for Business Analysts (IBM); AI For Business Productivity – 2026",
+      "functions": "All functions — deeper for Ops, PM, CS, Sales",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Builder → Multiplier",
+      "skill": "AI Orchestration (advanced)",
+      "in_practice": "Design multi-agent workflows where AI components hand off to each other with defined logic.",
+      "cert_pathway": "Agentic AI and AI Agents for Leaders; Hands-on Agentic AI: Building Intelligent Agents",
+      "functions": "Leaders, Ops, Senior ICs, Technical-adjacent roles",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Builder → Multiplier",
+      "skill": "Agentic Workflows",
+      "in_practice": "Define what an AI agent decides independently versus what it escalates — before deploying it.",
+      "cert_pathway": "Agentic AI and AI Agents for Leaders; Hands-on Agentic AI: Building Intelligent Agents",
+      "functions": "Leaders, Ops, Senior ICs, Technical-adjacent roles",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Builder → Multiplier",
+      "skill": "Agentic systems",
+      "in_practice": "Distinguish tasks that should be agentic from tasks that must stay human-in-the-loop.",
+      "cert_pathway": "Agentic AI and AI Agents for Leaders; Hands-on Agentic AI: Building Intelligent Agents",
+      "functions": "Leaders, Ops, Senior ICs, Technical-adjacent roles",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Builder → Multiplier",
+      "skill": "MLOps (conceptual)",
+      "in_practice": "Explain what keeps an AI system in production and why it degrades without active maintenance.",
+      "cert_pathway": "Agentic AI and AI Agents for Leaders; Hands-on Agentic AI: Building Intelligent Agents",
+      "functions": "Leaders, Ops, Senior ICs, Technical-adjacent roles",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Builder → Multiplier",
+      "skill": "Scalability (organizational)",
+      "in_practice": "Make infrastructure and tooling decisions that work for the org, not just your team.",
+      "cert_pathway": "Agentic AI and AI Agents for Leaders; Hands-on Agentic AI: Building Intelligent Agents",
+      "functions": "Leaders, Ops, Senior ICs, Technical-adjacent roles",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "systemic adoption"
+      ]
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Builder → Multiplier",
+      "skill": "Business Process Automation (org level)",
+      "in_practice": "Eliminate a category of work at function scale — not just accelerate it.",
+      "cert_pathway": "Agentic AI and AI Agents for Leaders; Hands-on Agentic AI: Building Intelligent Agents",
+      "functions": "Leaders, Ops, Senior ICs, Technical-adjacent roles",
+      "readiness_factors": [
+        "job_crafting"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "A",
+      "dimension": "Autonomy",
+      "sub_competency": "Workflow Design",
+      "transition": "Builder → Multiplier",
+      "skill": "Continuous Deployment",
+      "in_practice": "Build systems that improve over time without requiring a manual rebuild.",
+      "cert_pathway": "Agentic AI and AI Agents for Leaders; Hands-on Agentic AI: Building Intelligent Agents",
+      "functions": "Leaders, Ops, Senior ICs, Technical-adjacent roles",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Goal Setting",
+      "in_practice": "Define the outcome you want before deciding whether AI belongs in the task.",
+      "cert_pathway": "— (foundational; developed in AFS 100)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_route"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Decision Making",
+      "in_practice": "Make sound judgments under uncertainty about whether AI output is reliable enough to act on.",
+      "cert_pathway": "— (foundational; developed in AFS 100)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Needs Assessment",
+      "in_practice": "Diagnose the actual problem before selecting any solution — AI or otherwise.",
+      "cert_pathway": "— (foundational; developed in AFS 100)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_route"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "AI Enablement",
+      "in_practice": "Recognize where AI creates leverage in your specific work and act on it.",
+      "cert_pathway": "— (foundational; developed in AFS 100)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Problem Solving",
+      "in_practice": "Frame a problem in terms AI can meaningfully address before writing a single prompt.",
+      "cert_pathway": "— (foundational; developed in AFS 100)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pilot → Builder",
+      "skill": "AI Product Strategy",
+      "in_practice": "Treat an AI solution like a product — define users, outcomes, and a success measure before building.",
+      "cert_pathway": "AI Foundations for Business Professionals; AI Innovation & Product Strategy; Generative AI for [function] IBM series",
+      "functions": "All functions — deeper for Leaders, Strategy, Product, PM",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pilot → Builder",
+      "skill": "Strategic Thinking",
+      "in_practice": "Understand what decision an AI output is serving before producing it.",
+      "cert_pathway": "AI Foundations for Business Professionals; AI Innovation & Product Strategy; Generative AI for [function] IBM series",
+      "functions": "All functions — deeper for Leaders, Strategy, Product, PM",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pilot → Builder",
+      "skill": "Business Requirements",
+      "in_practice": "Translate a business need into a specific system requirement another person could build to.",
+      "cert_pathway": "AI Foundations for Business Professionals; AI Innovation & Product Strategy; Generative AI for [function] IBM series",
+      "functions": "All functions — deeper for Leaders, Strategy, Product, PM",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pilot → Builder",
+      "skill": "Value Propositions",
+      "in_practice": "Articulate why an AI solution is worth building — in terms of business value, not AI capability.",
+      "cert_pathway": "AI Foundations for Business Professionals; AI Innovation & Product Strategy; Generative AI for [function] IBM series",
+      "functions": "All functions — deeper for Leaders, Strategy, Product, PM",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pilot → Builder",
+      "skill": "Go-To-Market Strategy",
+      "in_practice": "Plan how an AI-powered output reaches its end user before finishing the build.",
+      "cert_pathway": "AI Foundations for Business Professionals; AI Innovation & Product Strategy; Generative AI for [function] IBM series",
+      "functions": "All functions — deeper for Leaders, Strategy, Product, PM",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pilot → Builder",
+      "skill": "AI Governance",
+      "in_practice": "Apply organizational guardrails to your AI work — know where they exist, why, and when they bind.",
+      "cert_pathway": "AI Foundations for Business Professionals; AI Innovation & Product Strategy; Generative AI for [function] IBM series",
+      "functions": "All functions — deeper for Leaders, Strategy, Product, PM",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Pilot → Builder",
+      "skill": "Complex Problem Solving",
+      "in_practice": "Design a multi-step AI task structure for problems that can't be solved in a single prompt.",
+      "cert_pathway": "AI Foundations for Business Professionals; AI Innovation & Product Strategy; Generative AI for [function] IBM series",
+      "functions": "All functions — deeper for Leaders, Strategy, Product, PM",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Builder → Multiplier",
+      "skill": "Business Strategy",
+      "in_practice": "Connect AI investment decisions to organizational priorities — not just capability building.",
+      "cert_pathway": "Generative AI Leadership & Strategy; AI Innovation & Entrepreneurship; Navigating Generative AI for Leaders; Generative AI Strategic Leader (IBM)",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Builder → Multiplier",
+      "skill": "AI Product Strategy (organizational)",
+      "in_practice": "Define where AI creates and destroys value at function scale; communicate that judgment to leaders.",
+      "cert_pathway": "Generative AI Leadership & Strategy; AI Innovation & Entrepreneurship; Navigating Generative AI for Leaders; Generative AI Strategic Leader (IBM)",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Builder → Multiplier",
+      "skill": "Strategic Planning",
+      "in_practice": "Build AI into how your function plans and operates — not as a special initiative but as standard practice.",
+      "cert_pathway": "Generative AI Leadership & Strategy; AI Innovation & Entrepreneurship; Navigating Generative AI for Leaders; Generative AI Strategic Leader (IBM)",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Builder → Multiplier",
+      "skill": "AI Enablement (organizational)",
+      "in_practice": "Shape how leaders in your org identify and act on AI opportunity. Own the question, not just the answer.",
+      "cert_pathway": "Generative AI Leadership & Strategy; AI Innovation & Entrepreneurship; Navigating Generative AI for Leaders; Generative AI Strategic Leader (IBM)",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N1 — Intent (Know Before You Fly)",
+      "transition": "Builder → Multiplier",
+      "skill": "AI Governance (design level)",
+      "in_practice": "Design guardrails for your org — not just follow the ones that exist.",
+      "cert_pathway": "Generative AI Leadership & Strategy; AI Innovation & Entrepreneurship; Navigating Generative AI for Leaders; Generative AI Strategic Leader (IBM)",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Critical Thinking",
+      "in_practice": "Question an AI output before acting on it — ask what would have to be true for this to be wrong.",
+      "cert_pathway": "— (developed in AFS 100 + early Coursera exposure)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Quality Management",
+      "in_practice": "Define what 'good enough' means for AI-assisted work in your context before producing it.",
+      "cert_pathway": "— (developed in AFS 100 + early Coursera exposure)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": [
+        "quality assurance"
+      ]
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Risk Assessment",
+      "in_practice": "Recognize when an AI error would create a downstream problem and adjust your verification accordingly.",
+      "cert_pathway": "— (developed in AFS 100 + early Coursera exposure)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Decision Making",
+      "in_practice": "Make sound judgments under uncertainty about whether AI output is reliable enough to act on.",
+      "cert_pathway": "— (developed in AFS 100 + early Coursera exposure)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Verification habits",
+      "in_practice": "Verify before you share, present, or act — every time, not just when stakes feel obvious.",
+      "cert_pathway": "— (developed in AFS 100 + early Coursera exposure)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pilot → Builder",
+      "skill": "Model Evaluation",
+      "in_practice": "Apply structured criteria to assess AI output: accuracy, relevance, coherence, and appropriate confidence level.",
+      "cert_pathway": "Generative AI Fundamentals; AI Literacy: Responsible, Trustworthy, Effective; Generative AI for [function] IBM series",
+      "functions": "All functions — judgment criteria are role-specific; deeper for PM, Data, CS, L&D",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pilot → Builder",
+      "skill": "Risk Analysis",
+      "in_practice": "Size the risk of an AI error in your specific context and calibrate how much verification that risk requires.",
+      "cert_pathway": "Generative AI Fundamentals; AI Literacy: Responsible, Trustworthy, Effective; Generative AI for [function] IBM series",
+      "functions": "All functions — judgment criteria are role-specific; deeper for PM, Data, CS, L&D",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pilot → Builder",
+      "skill": "Performance Analysis",
+      "in_practice": "Measure whether AI-assisted work is actually better — not just whether it felt faster.",
+      "cert_pathway": "Generative AI Fundamentals; AI Literacy: Responsible, Trustworthy, Effective; Generative AI for [function] IBM series",
+      "functions": "All functions — judgment criteria are role-specific; deeper for PM, Data, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pilot → Builder",
+      "skill": "Usability Testing",
+      "in_practice": "Evaluate an AI tool or workflow before deploying it to others — identify failure modes first.",
+      "cert_pathway": "Generative AI Fundamentals; AI Literacy: Responsible, Trustworthy, Effective; Generative AI for [function] IBM series",
+      "functions": "All functions — judgment criteria are role-specific; deeper for PM, Data, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "quality assurance",
+        "user accessibility",
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pilot → Builder",
+      "skill": "Competitive Analysis",
+      "in_practice": "Benchmark your AI-assisted outputs against the standard others are setting in your field.",
+      "cert_pathway": "Generative AI Fundamentals; AI Literacy: Responsible, Trustworthy, Effective; Generative AI for [function] IBM series",
+      "functions": "All functions — judgment criteria are role-specific; deeper for PM, Data, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pilot → Builder",
+      "skill": "Data Validation",
+      "in_practice": "Check that AI-processed information is accurate and complete before using it downstream.",
+      "cert_pathway": "Generative AI Fundamentals; AI Literacy: Responsible, Trustworthy, Effective; Generative AI for [function] IBM series",
+      "functions": "All functions — judgment criteria are role-specific; deeper for PM, Data, CS, L&D",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": [
+        "quality assurance"
+      ]
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Pilot → Builder",
+      "skill": "Benchmarking",
+      "in_practice": "Set quality thresholds for AI-assisted outputs and track whether you're meeting them over time.",
+      "cert_pathway": "Generative AI Fundamentals; AI Literacy: Responsible, Trustworthy, Effective; Generative AI for [function] IBM series",
+      "functions": "All functions — judgment criteria are role-specific; deeper for PM, Data, CS, L&D",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": [
+        "quality assurance"
+      ]
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Builder → Multiplier",
+      "skill": "Model Evaluation (framework design)",
+      "in_practice": "Build evaluation criteria your team uses consistently — not just criteria you apply yourself.",
+      "cert_pathway": "Generative AI Cybersecurity & Privacy for Leaders; AI Foundations for Business Professionals; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Builder → Multiplier",
+      "skill": "Performance Measurement",
+      "in_practice": "Define what quality looks like for AI-assisted work across your function — a standard, not an opinion.",
+      "cert_pathway": "Generative AI Cybersecurity & Privacy for Leaders; AI Foundations for Business Professionals; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "quality assurance"
+      ]
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Builder → Multiplier",
+      "skill": "Business Analysis",
+      "in_practice": "Connect AI output quality to business outcomes — not just technical accuracy.",
+      "cert_pathway": "Generative AI Cybersecurity & Privacy for Leaders; AI Foundations for Business Professionals; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "quality assurance"
+      ]
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Builder → Multiplier",
+      "skill": "Key Performance Indicators",
+      "in_practice": "Create measurable quality thresholds others can apply without asking you what they mean.",
+      "cert_pathway": "Generative AI Cybersecurity & Privacy for Leaders; AI Foundations for Business Professionals; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "quality assurance"
+      ]
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Builder → Multiplier",
+      "skill": "Critical Thinking (leadership level)",
+      "in_practice": "Shape how your org reasons about AI reliability — set the epistemic standard, not just the technical one.",
+      "cert_pathway": "Generative AI Cybersecurity & Privacy for Leaders; AI Foundations for Business Professionals; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [
+        "calibration_verify",
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "N",
+      "dimension": "Navigation",
+      "sub_competency": "N2 — Judgment (Read the Instruments)",
+      "transition": "Builder → Multiplier",
+      "skill": "Benchmarking (organizational)",
+      "in_practice": "Set the standard — don't just apply it.",
+      "cert_pathway": "Generative AI Cybersecurity & Privacy for Leaders; AI Foundations for Business Professionals; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior function heads",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Communication",
+      "in_practice": "Explain what AI did and why it mattered to someone who wasn't in the room.",
+      "cert_pathway": "— (developed through AFS 100 peer community; no cert readiness yet)",
+      "functions": "All functions — especially managers and people with informal influence",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Teaching",
+      "in_practice": "Turn what you learned from an AI experiment into something a peer can replicate.",
+      "cert_pathway": "— (developed through AFS 100 peer community; no cert readiness yet)",
+      "functions": "All functions — especially managers and people with informal influence",
+      "readiness_factors": [
+        "championing",
+        "engagement"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Persuasive Communication",
+      "in_practice": "Make AI adoption feel worth the friction — without overpromising what AI delivers.",
+      "cert_pathway": "— (developed through AFS 100 peer community; no cert readiness yet)",
+      "functions": "All functions — especially managers and people with informal influence",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": [
+        "systemic adoption"
+      ]
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Internal Communications",
+      "in_practice": "Introduce an AI practice to your team in a way that invites participation, not compliance.",
+      "cert_pathway": "— (developed through AFS 100 peer community; no cert readiness yet)",
+      "functions": "All functions — especially managers and people with informal influence",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Coaching",
+      "in_practice": "Develop someone else's AI capability through questions and feedback — not by doing it for them.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Stakeholder Management",
+      "in_practice": "Navigate resistance and competing priorities without letting them stop meaningful progress.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Change Management",
+      "in_practice": "Manage the human side of AI adoption: expect resistance, plan for it, work through it.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": [
+        "change management",
+        "systemic adoption"
+      ]
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Training and Development",
+      "in_practice": "Design a learning experience — not just share a resource.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Collaboration",
+      "in_practice": "Bring your AI skills into someone else's workflow and leave them more capable than you found them.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Cross-Functional Collaboration",
+      "in_practice": "Apply your AI capability in contexts and workflows you don't own.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Leadership",
+      "in_practice": "Model AI-fluent work visibly enough that others can see what it looks like and start doing it.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Developing Training Materials",
+      "in_practice": "Build something reusable — not just a one-time explanation that lives only in your head.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Stakeholder Engagement",
+      "in_practice": "Create the conditions for others to grow — not just the invitation.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Employee Coaching",
+      "in_practice": "Diagnose the specific block someone has with AI and develop it — not give generic advice.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Pilot → Builder",
+      "skill": "Discussion Facilitation",
+      "in_practice": "Run an AI learning conversation where others do the thinking — not just listen.",
+      "cert_pathway": "Design and Apply Generative AI for HR Performance; Generative AI for Educators (IBM); AI For Business Productivity – 2026",
+      "functions": "L&D, HR, People Managers, AI Champions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Builder → Multiplier",
+      "skill": "Strategic Communication",
+      "in_practice": "Shape the organizational narrative about AI — what it means for BetterUp, not just your team.",
+      "cert_pathway": "AI Leadership & Strategic Implementation; Apply Generative AI for Leadership & Human-Centered Branding; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior L&D, Senior HR",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Builder → Multiplier",
+      "skill": "Strategic Leadership",
+      "in_practice": "Use AI fluency as a lever for broader organizational influence — beyond the learning domain.",
+      "cert_pathway": "AI Leadership & Strategic Implementation; Apply Generative AI for Leadership & Human-Centered Branding; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior L&D, Senior HR",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Builder → Multiplier",
+      "skill": "Culture Transformation",
+      "in_practice": "Change how your function thinks about AI work — not just who does it.",
+      "cert_pathway": "AI Leadership & Strategic Implementation; Apply Generative AI for Leadership & Human-Centered Branding; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior L&D, Senior HR",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Builder → Multiplier",
+      "skill": "Leadership Development",
+      "in_practice": "Build managers' capacity to develop their own teams' AI capability without depending on you.",
+      "cert_pathway": "AI Leadership & Strategic Implementation; Apply Generative AI for Leadership & Human-Centered Branding; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior L&D, Senior HR",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Builder → Multiplier",
+      "skill": "Thought Leadership",
+      "in_practice": "Establish credibility on AI capability standards across functions — be the person others reference.",
+      "cert_pathway": "AI Leadership & Strategic Implementation; Apply Generative AI for Leadership & Human-Centered Branding; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior L&D, Senior HR",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Builder → Multiplier",
+      "skill": "Sales Enablement",
+      "in_practice": "Equip others with what they need to succeed independently — then get out of the way.",
+      "cert_pathway": "AI Leadership & Strategic Implementation; Apply Generative AI for Leadership & Human-Centered Branding; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior L&D, Senior HR",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Builder → Multiplier",
+      "skill": "Organizational Change",
+      "in_practice": "Lead a capability transformation at scale — with a plan, milestones, and evidence of movement.",
+      "cert_pathway": "AI Leadership & Strategic Implementation; Apply Generative AI for Leadership & Human-Centered Branding; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior L&D, Senior HR",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "change management"
+      ]
+    },
+    {
+      "dim": "G",
+      "dimension": "Generalization",
+      "sub_competency": "Peer Enablement",
+      "transition": "Builder → Multiplier",
+      "skill": "Business Leadership",
+      "in_practice": "Own a visible piece of BetterUp's AI maturity story — not just support it.",
+      "cert_pathway": "AI Leadership & Strategic Implementation; Apply Generative AI for Leadership & Human-Centered Branding; Executive AI Leadership Mastery",
+      "functions": "Leaders, AI Champions, Senior L&D, Senior HR",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Prompt Engineering",
+      "in_practice": "Write a prompt, evaluate the output, change the prompt, explain what you changed and why.",
+      "cert_pathway": "— (AFS 100 foundational; Coursera intro tracks)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Generative AI",
+      "in_practice": "Direct a generative AI model toward a specific output — format, tone, audience, and scope all defined.",
+      "cert_pathway": "— (AFS 100 foundational; Coursera intro tracks)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Applied AI delivery",
+      "in_practice": "Complete a real work task using Claude from brief to finished output.",
+      "cert_pathway": "— (AFS 100 foundational; Coursera intro tracks)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Content Creation",
+      "in_practice": "Produce AI-assisted content that meets your quality standard — not AI's first draft.",
+      "cert_pathway": "— (AFS 100 foundational; Coursera intro tracks)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "quality assurance"
+      ]
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Instructional Design",
+      "in_practice": "Direct AI toward a learning output with a defined audience and objective — not a generic summary.",
+      "cert_pathway": "— (AFS 100 foundational; Coursera intro tracks)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Communication",
+      "in_practice": "Translate a vague need into a specific, usable AI request before opening any tool.",
+      "cert_pathway": "— (AFS 100 foundational; Coursera intro tracks)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pilot → Builder",
+      "skill": "Prompt Engineering (advanced)",
+      "in_practice": "Design a multi-turn prompt sequence that produces progressively better outputs — document it for others to reuse.",
+      "cert_pathway": "Prompt Engineering (Coursera); Generative AI for [function] IBM series; AI for Business: Branding, Creative Content, and Marketing",
+      "functions": "All functions — deeper for Marketing, Sales, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pilot → Builder",
+      "skill": "Prompt Engineering Tools",
+      "in_practice": "Use structured tools to manage, version, and share prompts so they outlast the conversation.",
+      "cert_pathway": "Prompt Engineering (Coursera); Generative AI for [function] IBM series; AI for Business: Branding, Creative Content, and Marketing",
+      "functions": "All functions — deeper for Marketing, Sales, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pilot → Builder",
+      "skill": "Technical Writing",
+      "in_practice": "Specify what you want with enough precision that someone else could reproduce the output.",
+      "cert_pathway": "Prompt Engineering (Coursera); Generative AI for [function] IBM series; AI for Business: Branding, Creative Content, and Marketing",
+      "functions": "All functions — deeper for Marketing, Sales, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pilot → Builder",
+      "skill": "Storytelling",
+      "in_practice": "Direct AI toward a narrative that lands with a specific audience — not just an accurate summary.",
+      "cert_pathway": "Prompt Engineering (Coursera); Generative AI for [function] IBM series; AI for Business: Branding, Creative Content, and Marketing",
+      "functions": "All functions — deeper for Marketing, Sales, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pilot → Builder",
+      "skill": "Data Storytelling",
+      "in_practice": "Translate AI-assisted analysis into a compelling communication a non-expert can act on.",
+      "cert_pathway": "Prompt Engineering (Coursera); Generative AI for [function] IBM series; AI for Business: Branding, Creative Content, and Marketing",
+      "functions": "All functions — deeper for Marketing, Sales, CS, L&D",
+      "readiness_factors": [
+        "championing"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pilot → Builder",
+      "skill": "Content Creation (systems level)",
+      "in_practice": "Build a reusable content system — not just individual pieces produced one at a time.",
+      "cert_pathway": "Prompt Engineering (Coursera); Generative AI for [function] IBM series; AI for Business: Branding, Creative Content, and Marketing",
+      "functions": "All functions — deeper for Marketing, Sales, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pilot → Builder",
+      "skill": "Copywriting",
+      "in_practice": "Produce AI-assisted copy that holds brand voice and quality without heavy manual editing.",
+      "cert_pathway": "Prompt Engineering (Coursera); Generative AI for [function] IBM series; AI for Business: Branding, Creative Content, and Marketing",
+      "functions": "All functions — deeper for Marketing, Sales, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "quality assurance"
+      ]
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pilot → Builder",
+      "skill": "LLM Application",
+      "in_practice": "Structure tasks for language models in ways that use their strengths and route around their failure modes.",
+      "cert_pathway": "Prompt Engineering (Coursera); Generative AI for [function] IBM series; AI for Business: Branding, Creative Content, and Marketing",
+      "functions": "All functions — deeper for Marketing, Sales, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Pilot → Builder",
+      "skill": "Technical Documentation",
+      "in_practice": "Capture what an AI system does clearly enough that someone else can use and maintain it without you.",
+      "cert_pathway": "Prompt Engineering (Coursera); Generative AI for [function] IBM series; AI for Business: Branding, Creative Content, and Marketing",
+      "functions": "All functions — deeper for Marketing, Sales, CS, L&D",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Builder → Multiplier",
+      "skill": "LLM Application (advanced)",
+      "in_practice": "Design AI interactions at system level — architecture, not just prompt craft.",
+      "cert_pathway": "Generative AI Leadership & Strategy; Generative AI Strategic Leader (IBM)",
+      "functions": "Leaders, L&D, Senior ICs who define org-wide standards",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Builder → Multiplier",
+      "skill": "Natural Language Processing",
+      "in_practice": "Explain what's happening inside a language model well enough to make better design and deployment decisions.",
+      "cert_pathway": "Generative AI Leadership & Strategy; Generative AI Strategic Leader (IBM)",
+      "functions": "Leaders, L&D, Senior ICs who define org-wide standards",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Builder → Multiplier",
+      "skill": "Prompt Engineering (org standards)",
+      "in_practice": "Define prompting standards others use across the org — not just best practices you follow yourself.",
+      "cert_pathway": "Generative AI Leadership & Strategy; Generative AI Strategic Leader (IBM)",
+      "functions": "Leaders, L&D, Senior ICs who define org-wide standards",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E1 — Voice (Brief AI Like a Contractor)",
+      "transition": "Builder → Multiplier",
+      "skill": "Data Visualization",
+      "in_practice": "Direct AI toward visual outputs that accurately represent complex data for a non-technical audience.",
+      "cert_pathway": "Generative AI Leadership & Strategy; Generative AI Strategic Leader (IBM)",
+      "functions": "Leaders, L&D, Senior ICs who define org-wide standards",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Responsible AI",
+      "in_practice": "Apply BetterUp's AI use expectations to your own work — without needing to be reminded.",
+      "cert_pathway": "— (foundational; developed in AFS 100 + early Coursera)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Business Ethics",
+      "in_practice": "Make sound ethical judgments about AI-assisted work when the right answer isn't obvious.",
+      "cert_pathway": "— (foundational; developed in AFS 100 + early Coursera)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Trustworthiness",
+      "in_practice": "Verify AI output before acting on it — every time, not only when stakes feel high.",
+      "cert_pathway": "— (foundational; developed in AFS 100 + early Coursera)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Security Awareness",
+      "in_practice": "Know what not to put into AI tools and apply that consistently, not situationally.",
+      "cert_pathway": "— (foundational; developed in AFS 100 + early Coursera)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Data Ethics",
+      "in_practice": "Handle data in AI interactions with the same care you'd apply to a regulated document.",
+      "cert_pathway": "— (foundational; developed in AFS 100 + early Coursera)",
+      "functions": "All functions",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pre-Pilot → Pilot",
+      "skill": "Accountability",
+      "in_practice": "Own the output AI helped you produce — fully, not partially.",
+      "cert_pathway": "— (foundational; developed in AFS 100 + early Coursera)",
+      "functions": "All functions",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pilot → Builder",
+      "skill": "Responsible AI (applied)",
+      "in_practice": "Make specific, defensible judgment calls about appropriate AI use in ambiguous situations.",
+      "cert_pathway": "AI Literacy: Responsible, Trustworthy, Effective; Data Privacy, Ethics, and Responsible AI; Generative AI Cybersecurity & Privacy for Leaders; AI for Business Ethics & Financial Strategy Mastery",
+      "functions": "All functions — most critical for roles handling sensitive data: HR, CS, Finance, Legal-adjacent",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pilot → Builder",
+      "skill": "Data Ethics (applied)",
+      "in_practice": "Handle sensitive data in AI workflows in ways that protect people and the organization — not just comply.",
+      "cert_pathway": "AI Literacy: Responsible, Trustworthy, Effective; Data Privacy, Ethics, and Responsible AI; Generative AI Cybersecurity & Privacy for Leaders; AI for Business Ethics & Financial Strategy Mastery",
+      "functions": "All functions — most critical for roles handling sensitive data: HR, CS, Finance, Legal-adjacent",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pilot → Builder",
+      "skill": "Data Governance",
+      "in_practice": "Follow governance requirements for AI tools and flag gaps when you encounter them.",
+      "cert_pathway": "AI Literacy: Responsible, Trustworthy, Effective; Data Privacy, Ethics, and Responsible AI; Generative AI Cybersecurity & Privacy for Leaders; AI for Business Ethics & Financial Strategy Mastery",
+      "functions": "All functions — most critical for roles handling sensitive data: HR, CS, Finance, Legal-adjacent",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pilot → Builder",
+      "skill": "Compliance",
+      "in_practice": "Know which regulatory requirements apply to your AI use cases and work within them proactively.",
+      "cert_pathway": "AI Literacy: Responsible, Trustworthy, Effective; Data Privacy, Ethics, and Responsible AI; Generative AI Cybersecurity & Privacy for Leaders; AI for Business Ethics & Financial Strategy Mastery",
+      "functions": "All functions — most critical for roles handling sensitive data: HR, CS, Finance, Legal-adjacent",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pilot → Builder",
+      "skill": "AI Security",
+      "in_practice": "Recognize security risks in AI-assisted work before they become exposure.",
+      "cert_pathway": "AI Literacy: Responsible, Trustworthy, Effective; Data Privacy, Ethics, and Responsible AI; Generative AI Cybersecurity & Privacy for Leaders; AI for Business Ethics & Financial Strategy Mastery",
+      "functions": "All functions — most critical for roles handling sensitive data: HR, CS, Finance, Legal-adjacent",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pilot → Builder",
+      "skill": "Information Privacy",
+      "in_practice": "Protect personal and organizational data in AI interactions as a habit, not a checklist.",
+      "cert_pathway": "AI Literacy: Responsible, Trustworthy, Effective; Data Privacy, Ethics, and Responsible AI; Generative AI Cybersecurity & Privacy for Leaders; AI for Business Ethics & Financial Strategy Mastery",
+      "functions": "All functions — most critical for roles handling sensitive data: HR, CS, Finance, Legal-adjacent",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pilot → Builder",
+      "skill": "Business Ethics (applied)",
+      "in_practice": "Navigate grey areas in AI use with judgment you can defend to someone who wasn't in the room.",
+      "cert_pathway": "AI Literacy: Responsible, Trustworthy, Effective; Data Privacy, Ethics, and Responsible AI; Generative AI Cybersecurity & Privacy for Leaders; AI for Business Ethics & Financial Strategy Mastery",
+      "functions": "All functions — most critical for roles handling sensitive data: HR, CS, Finance, Legal-adjacent",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pilot → Builder",
+      "skill": "Cybersecurity (awareness)",
+      "in_practice": "Understand the threat surface AI work creates and act accordingly.",
+      "cert_pathway": "AI Literacy: Responsible, Trustworthy, Effective; Data Privacy, Ethics, and Responsible AI; Generative AI Cybersecurity & Privacy for Leaders; AI for Business Ethics & Financial Strategy Mastery",
+      "functions": "All functions — most critical for roles handling sensitive data: HR, CS, Finance, Legal-adjacent",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Pilot → Builder",
+      "skill": "Legal Risk (awareness)",
+      "in_practice": "Recognize where AI use creates legal or reputational exposure before it becomes a problem.",
+      "cert_pathway": "AI Literacy: Responsible, Trustworthy, Effective; Data Privacy, Ethics, and Responsible AI; Generative AI Cybersecurity & Privacy for Leaders; AI for Business Ethics & Financial Strategy Mastery",
+      "functions": "All functions — most critical for roles handling sensitive data: HR, CS, Finance, Legal-adjacent",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Builder → Multiplier",
+      "skill": "AI Security (organizational)",
+      "in_practice": "Define security standards for AI use across your function — set the bar, don't just clear it.",
+      "cert_pathway": "Responsible AI for Developers (conceptual depth); Generative AI Cybersecurity & Privacy for Leaders; Data Privacy, Ethics, and Responsible AI",
+      "functions": "Leaders, Senior ICs, AI Champions, Legal-adjacent, HR leadership",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Builder → Multiplier",
+      "skill": "Data Governance (organizational)",
+      "in_practice": "Build governance frameworks others operate within — don't just comply with what exists.",
+      "cert_pathway": "Responsible AI for Developers (conceptual depth); Generative AI Cybersecurity & Privacy for Leaders; Data Privacy, Ethics, and Responsible AI",
+      "functions": "Leaders, Senior ICs, AI Champions, Legal-adjacent, HR leadership",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Builder → Multiplier",
+      "skill": "Responsible AI (policy level)",
+      "in_practice": "Contribute to how BetterUp defines responsible AI use — shape policy, don't just follow it.",
+      "cert_pathway": "Responsible AI for Developers (conceptual depth); Generative AI Cybersecurity & Privacy for Leaders; Data Privacy, Ethics, and Responsible AI",
+      "functions": "Leaders, Senior ICs, AI Champions, Legal-adjacent, HR leadership",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Builder → Multiplier",
+      "skill": "Information Privacy (organizational)",
+      "in_practice": "Design privacy into AI systems from the start — not as a late-stage review.",
+      "cert_pathway": "Responsible AI for Developers (conceptual depth); Generative AI Cybersecurity & Privacy for Leaders; Data Privacy, Ethics, and Responsible AI",
+      "functions": "Leaders, Senior ICs, AI Champions, Legal-adjacent, HR leadership",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Builder → Multiplier",
+      "skill": "Governance",
+      "in_practice": "Own accountability structures — not just operate within them.",
+      "cert_pathway": "Responsible AI for Developers (conceptual depth); Generative AI Cybersecurity & Privacy for Leaders; Data Privacy, Ethics, and Responsible AI",
+      "functions": "Leaders, Senior ICs, AI Champions, Legal-adjacent, HR leadership",
+      "readiness_factors": [
+        "calibration_verify"
+      ],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Builder → Multiplier",
+      "skill": "Compliance Management",
+      "in_practice": "Build compliance into AI workflows by design, not as a checkpoint after the fact.",
+      "cert_pathway": "Responsible AI for Developers (conceptual depth); Generative AI Cybersecurity & Privacy for Leaders; Data Privacy, Ethics, and Responsible AI",
+      "functions": "Leaders, Senior ICs, AI Champions, Legal-adjacent, HR leadership",
+      "readiness_factors": [],
+      "non_ai_layer": [
+        "workflow design"
+      ]
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Builder → Multiplier",
+      "skill": "Data Ethics (organizational)",
+      "in_practice": "Set ethical standards for AI-assisted work at scale — make them specific enough to apply.",
+      "cert_pathway": "Responsible AI for Developers (conceptual depth); Generative AI Cybersecurity & Privacy for Leaders; Data Privacy, Ethics, and Responsible AI",
+      "functions": "Leaders, Senior ICs, AI Champions, Legal-adjacent, HR leadership",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    },
+    {
+      "dim": "E",
+      "dimension": "Execution Fidelity",
+      "sub_competency": "E2 — Ownership (Pilot Is Always Responsible)",
+      "transition": "Builder → Multiplier",
+      "skill": "GDPR (conceptual)",
+      "in_practice": "Understand the regulatory requirements that apply to data used in AI and work within them deliberately.",
+      "cert_pathway": "Responsible AI for Developers (conceptual depth); Generative AI Cybersecurity & Privacy for Leaders; Data Privacy, Ethics, and Responsible AI",
+      "functions": "Leaders, Senior ICs, AI Champions, Legal-adjacent, HR leadership",
+      "readiness_factors": [],
+      "non_ai_layer": []
+    }
+  ]
+}
