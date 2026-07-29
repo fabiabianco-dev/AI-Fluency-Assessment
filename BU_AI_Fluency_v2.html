@@ -1332,50 +1332,6 @@
       <div class="path-recs" id="pathRecs"></div>
 
       <div id="courseRecs" style="margin-bottom: 48px;"></div>
-
-      <div style="margin-bottom: 48px;">
-        <div class="font-mono" style="color: var(--text-muted); margin-bottom: 24px; font-size: 0.65rem; letter-spacing: 0.18em;">Program Map</div>
-        <div class="program-table-wrap">
-          <table class="program-table">
-            <thead>
-              <tr>
-                <th>Program</th>
-                <th>Primary RANGE Dimensions</th>
-                <th>What It Builds</th>
-                <th>What It Leaves Open</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="prog-name">Coursera GenAI Paths</td>
-                <td>All five RANGE dimensions</td>
-                <td>Foundational and role-specific AI fluency — experimentation mindset, prompting, workflow basics, function-specific application</td>
-                <td>Deployed team systems; org-wide change agency</td>
-              </tr>
-              <tr>
-                <td class="prog-name">AFS Next</td>
-                <td>Autonomy · Navigation · Execution Fidelity</td>
-                <td>Workflow systematization; team deployment; applied judgment; Still Running Test</td>
-                <td>Org-wide change agency; Generalization at scale</td>
-              </tr>
-              <tr>
-                <td class="prog-name">AI Builder Track</td>
-                <td>Generalization · Autonomy · Navigation</td>
-                <td>Org-wide change agency; coaching at scale; multiplying capability; Builder Badge</td>
-                <td>Technical engineering depth; agentic system architecture</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div id="retakeConfirmCard" style="background:rgba(244,243,233,0.03);border:1px solid rgba(244,243,233,0.1);border-radius:10px;padding:20px 24px;margin-bottom:32px;display:flex;align-items:center;gap:14px;">
-        <div style="font-size:1.1rem;color:var(--rubine-light);flex-shrink:0;">↺</div>
-        <div>
-          <div style="font-size:0.85rem;font-weight:600;color:var(--off-white);margin-bottom:3px;">This is a snapshot, not a destination.</div>
-          <div id="retakeConfirmText" style="font-size:0.8rem;color:var(--text-muted);line-height:1.55;">AI fluency compounds with deliberate practice. We'll send a retake invite to your email in 3 months so you can see how far you've come.</div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -2765,8 +2721,8 @@
         const whatsNextHTML = `
           <div style="margin-top:28px;padding:16px 18px;background:rgba(206,0,88,0.06);border:1px solid rgba(206,0,88,0.2);border-radius:10px;">
             <div class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--rubine-light);margin-bottom:10px;">What happens next</div>
-            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.85);margin:0 0 12px;">Your answers go to the L&amp;D team, who use them to recommend the right program and curate your path in Coursera — so you can close these skills quickly instead of hunting for courses yourself. The programs are ready. Invitations are coming shortly.</p>
-            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.75);margin:0;">If you'd like help sooner, or there's a skill you want to develop that didn't come through in your results, message the BU Learning team (Fabia) in Slack. She can take it into account when making recommendations for the courses and programs for you in Coursera.</p>
+            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.85);margin:0 0 12px;">Your answers go to the L&amp;D team, who use them to recommend the right program and curate your learning path — so you can close these skills quickly instead of hunting for resources yourself. Now that you've completed the assessment, invitations for programs are coming shortly.</p>
+            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.75);margin:0;">If you'd like help sooner, or there's a skill you want to develop that didn't come through in your results, email the BU Learning team at <a href="mailto:BU.Learning@BetterUp.co" style="color:var(--rubine-light);">BU.Learning@BetterUp.co</a>. The team will take it into account when making recommendations for courses — and may even build a whole new program based on your input.</p>
           </div>`;
 
 
@@ -2856,17 +2812,7 @@
         collection: { name: collection.name, url: collection.url, desc: collection.desc },
         dimAvgs
       };
-      // Auto-log retake reminder (90 days from now)
-      const retakeDate = new Date();
-      retakeDate.setDate(retakeDate.getDate() + 90);
-      const retakeDateStr = retakeDate.toISOString().split('T')[0];
-      const retakeDisplayStr = retakeDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-      // Update confirmation card with personalised email + date
-      const confirmText = document.getElementById('retakeConfirmText');
-      if (confirmText) {
-        confirmText.innerHTML = `AI fluency compounds with deliberate practice. We'll send a retake invite to <strong style="color:var(--off-white);">${userEmail}</strong> on <strong style="color:var(--off-white);">${retakeDisplayStr}</strong> so you can see how far you've come.`;
-      }
 
       fetch(GAS_URL, {
         method: 'POST',
@@ -2875,15 +2821,7 @@
         body: JSON.stringify(payload)
       }).catch(() => {});
 
-      // Log reminder automatically — no user action required
-      if (GAS_URL) {
-        fetch(GAS_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ type: 'reminder', name: userName, email: userEmail, retakeDate: retakeDateStr })
-        }).catch(() => {});
-      }
+
     }
 
     function resetAssessment() {

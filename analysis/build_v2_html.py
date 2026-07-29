@@ -163,8 +163,8 @@ WHATS_NEXT_JS = """        // ── What happens next ────────�
         const whatsNextHTML = `
           <div style="margin-top:28px;padding:16px 18px;background:rgba(206,0,88,0.06);border:1px solid rgba(206,0,88,0.2);border-radius:10px;">
             <div class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--rubine-light);margin-bottom:10px;">What happens next</div>
-            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.85);margin:0 0 12px;">Your answers go to the L&amp;D team, who use them to recommend the right program and curate your path in Coursera — so you can close these skills quickly instead of hunting for courses yourself. The programs are ready. Invitations are coming shortly.</p>
-            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.75);margin:0;">If you'd like help sooner, or there's a skill you want to develop that didn't come through in your results, message the BU Learning team (Fabia) in Slack. She can take it into account when making recommendations for the courses and programs for you in Coursera.</p>
+            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.85);margin:0 0 12px;">Your answers go to the L&amp;D team, who use them to recommend the right program and curate your learning path — so you can close these skills quickly instead of hunting for resources yourself. Now that you've completed the assessment, invitations for programs are coming shortly.</p>
+            <p style="font-size:0.86rem;line-height:1.7;color:rgba(244,243,233,0.75);margin:0;">If you'd like help sooner, or there's a skill you want to develop that didn't come through in your results, email the BU Learning team at <a href="mailto:BU.Learning@BetterUp.co" style="color:var(--rubine-light);">BU.Learning@BetterUp.co</a>. The team will take it into account when making recommendations for courses — and may even build a whole new program based on your input.</p>
           </div>`;
 """
 
@@ -339,6 +339,26 @@ def main():
                   "({ dim: g.dim, skill: g.skill, at: g.at, next: g.next })),\n"
                   "        limitingDimensions: getLimitingDimensions(),\n"
                   "        overallLevel: LEVELS[getOverallLevel()],\n", html, count=1)
+
+    # 3c. Program Map table out (Fabia: no value, and it names programs).
+    html = replace_span(html,
+                        '      <div style="margin-bottom: 48px;">\n'
+                        '        <div class="font-mono" style="color: var(--text-muted); '
+                        'margin-bottom: 24px; font-size: 0.65rem; letter-spacing: 0.18em;">'
+                        'Program Map</div>',
+                        r"^      </div>$", "", "Program Map table")
+
+    # 3d. Retake confirmation card out. It promised a retake invite in 90 days,
+    #     which directly contradicts removing the retake.
+    html = replace_span(html, '      <div id="retakeConfirmCard"',
+                        r"^      </div>$", "", "retake confirmation card")
+
+    # 3e. …and the reminder logging that fed it.
+    html = replace_span(html, "      // Auto-log retake reminder (90 days from now)",
+                        r"^      const retakeDisplayStr = [^\n]*\n(?:.*?\n)*?      \}$",
+                        "", "retake date + confirmation text update")
+    html = replace_span(html, "      // Log reminder automatically — no user action required",
+                        r"^      \}$", "", "reminder logging fetch")
 
     # 4. Anchor button styles
     html = html.replace("    .rating-btn {", ANCHOR_CSS + "    .rating-btn {", 1)
