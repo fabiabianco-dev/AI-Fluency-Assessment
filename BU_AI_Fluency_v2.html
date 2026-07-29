@@ -1563,12 +1563,12 @@
                   "process design",
                   "systems thinking"
             ],
-            "_howToAnswer": "Think about the recurring work you actually changed in the last two weeks — a process, a handoff, something you do every week. These questions are about what you did before and around the change, not how much AI you used.",
+            "_howToAnswer": "Think about recurring work you actually changed with AI in the last two weeks — a process, a handoff, something you do every week. These questions are about the thinking you did before and around the change, not how much AI you used.",
             "questions": [
                   {
                         "id": "A1",
                         "skill": "Persistence — does anything outlive the conversation",
-                        "stem": "Think about the AI work you did in the last two weeks. What was most true about what came out of it?",
+                        "stem": "Think about the work you did with AI in the last two weeks. What was most true about what came out of it?",
                         "anchors": [
                               "Nothing I made outlives the conversation it happened in.",
                               "I've saved a few prompts that I reuse.",
@@ -1589,7 +1589,7 @@
                   {
                         "id": "A2",
                         "skill": "Process mapping",
-                        "stem": "Think of a piece of recurring work you tried to speed up or automate in the last two weeks. What was most true about what you did first?",
+                        "stem": "Think of a piece of recurring work you tried to speed up or automate with AI in the last two weeks. What was most true about what you did first?",
                         "anchors": [
                               "I didn't change any recurring work.",
                               "I asked Claude to do the task faster.",
@@ -1610,7 +1610,7 @@
                   {
                         "id": "A3",
                         "skill": "Systems thinking",
-                        "stem": "Think of a time in the last two weeks when you changed a step in a process. What was most true about how far you looked?",
+                        "stem": "Think of a time in the last two weeks when you changed a step in a process because of something you built or automated with AI. What was most true about how far you looked?",
                         "anchors": [
                               "I changed my own step, and that was the scope of it.",
                               "I let people know afterwards.",
@@ -1686,7 +1686,7 @@
                   {
                         "id": "N3",
                         "skill": "Choosing the approach — rule, automation, or agent",
-                        "stem": "Think of something in the last two weeks that needed to happen repeatedly without you doing it each time. What was most true?",
+                        "stem": "Think of something in the last two weeks you wanted AI to handle repeatedly, without you running it each time. What was most true about how you set it up?",
                         "anchors": [
                               "I didn't have anything like that.",
                               "I redid it by hand each time, with AI's help.",
@@ -1714,12 +1714,12 @@
                   "user accessibility",
                   "transfer"
             ],
-            "_howToAnswer": "These are about the people and teams around your work — whether what you figured out travels, and what your changes do to everyone else. Think of a specific change you made in the last two weeks and who it touched.",
+            "_howToAnswer": "These are about the people and teams around your AI work — whether what you figured out travels, and what your changes do to everyone else. Think of a specific thing you built or changed with AI in the last two weeks, and who it touched.",
             "questions": [
                   {
                         "id": "G1",
                         "skill": "Transfer across contexts",
-                        "stem": "Think of something you figured out in one part of your job in the last two weeks. What was most true about where it ended up?",
+                        "stem": "Think of a way of using AI that you figured out in one part of your job in the last two weeks. What was most true about where it ended up?",
                         "anchors": [
                               "It stayed where it was.",
                               "I mentioned it to someone.",
@@ -1741,7 +1741,7 @@
                         "id": "G2",
                         "skill": "Consequence design — adoption asymmetry",
                         "_note": "Fabia: what happens when your team adopts and the teams around it don't.",
-                        "stem": "Think of a time in the last two weeks when your way of working changed because of something you built. What was most true about the people it affected?",
+                        "stem": "Think of a time in the last two weeks when your way of working changed because of something you built with AI. What was most true about the people it affected?",
                         "anchors": [
                               "I didn't think about the effect on anyone else.",
                               "I told the people who were directly affected.",
@@ -1762,7 +1762,7 @@
                   {
                         "id": "G3",
                         "skill": "User accessibility",
-                        "stem": "Think of something you built in the last two weeks that someone else might use. What was most true about how you built it?",
+                        "stem": "Think of something you built with AI in the last two weeks that someone else might use. What was most true about how you built it?",
                         "anchors": [
                               "I built it for me.",
                               "I'd explain it to someone if they asked.",
@@ -1791,7 +1791,7 @@
                   "sustainability",
                   "ethical management"
             ],
-            "_howToAnswer": "These are about quality and care — how you know something is good, what you let into shared systems, and what happens to your builds over time. Think of something specific you shipped or maintained in the last two weeks.",
+            "_howToAnswer": "These are about quality and care — how you know AI output is good, what you let into shared docs and systems, and what happens to your AI builds over time. Think of something specific you shipped or maintained with AI in the last two weeks.",
             "questions": [
                   {
                         "id": "E1",
@@ -1838,7 +1838,7 @@
                   {
                         "id": "E3",
                         "skill": "Sustainability and ethical ownership",
-                        "stem": "Think of something you've built that other people now rely on. What was most true in the last two weeks?",
+                        "stem": "Think of something you've built with AI that other people now rely on. What was most true in the last two weeks?",
                         "anchors": [
                               "I don't have anything that others rely on.",
                               "It works for now, and I'd deal with problems when they come.",
@@ -1862,10 +1862,10 @@
 
     const HOW_TO_ANSWER = {
       "reach": "Think of a specific time in the last two weeks when you brought AI to something unfamiliar, or had to work to get a useful answer out of it. Pick the option closest to what you actually did — not what you would do on a good day.",
-      "autonomy": "Think about the recurring work you actually changed in the last two weeks — a process, a handoff, something you do every week. These questions are about what you did before and around the change, not how much AI you used.",
+      "autonomy": "Think about recurring work you actually changed with AI in the last two weeks — a process, a handoff, something you do every week. These questions are about the thinking you did before and around the change, not how much AI you used.",
       "navigation": "These are about judgment — deciding whether to trust an output, whether to use AI at all, and which approach fits. There is no penalty for the lower options. Answer for what you actually did in the last two weeks.",
-      "generalization": "These are about the people and teams around your work — whether what you figured out travels, and what your changes do to everyone else. Think of a specific change you made in the last two weeks and who it touched.",
-      "execution": "These are about quality and care — how you know something is good, what you let into shared systems, and what happens to your builds over time. Think of something specific you shipped or maintained in the last two weeks."
+      "generalization": "These are about the people and teams around your AI work — whether what you figured out travels, and what your changes do to everyone else. Think of a specific thing you built or changed with AI in the last two weeks, and who it touched.",
+      "execution": "These are about quality and care — how you know AI output is good, what you let into shared docs and systems, and what happens to your AI builds over time. Think of something specific you shipped or maintained with AI in the last two weeks."
 };
 
 
