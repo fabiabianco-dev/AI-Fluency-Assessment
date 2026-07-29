@@ -78,6 +78,27 @@ SCORING_JS = """
       return counts;
     }
 
+    // ── Scores ────────────────────────────────────────────────────────────────
+    // The anchor a person picks is its position on a 6-rung behavioural ladder,
+    // so summing positions is a real count of demonstrated behaviour -- not the
+    // average-of-agreement the old instrument reported. 3 questions x 0-5 = 0-15
+    // per dimension, 75 overall.
+    //
+    // Deliberately NOT the RANGE Evaluator's /5 per dimension. The two
+    // instruments measure different things (docs/04), so a shared scale would
+    // invite learners to compare scores that are not comparable.
+    const DIM_POINTS_MAX = 15;
+
+    function getDimPoints(dimId) {
+      const state = dimState[dimId];
+      if (!state) return 0;
+      return state.responses.reduce((sum, r) => sum + r.choice, 0);
+    }
+
+    function getTotalPoints() {
+      return DOMAINS.reduce((sum, d) => sum + getDimPoints(d.id), 0);
+    }
+
     function getFinalLevel(dimId) {
       const state = dimState[dimId];
       if (!state || state.count === 0) return 0;
@@ -96,6 +117,12 @@ SCORING_JS = """
       const median = per[Math.floor(per.length / 2)];
       const penalty = per.some(x => x === 0) ? 1 : 0;
       return Math.max(0, median - penalty);
+    }
+
+    // "A, B and C" rather than "A and B and C".
+    function joinList(items) {
+      if (items.length <= 1) return items.join('');
+      return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
     }
 
     // Which dimension is holding the overall level down. The most actionable
@@ -207,7 +234,7 @@ SKILL_GAP_RENDER_JS = """        // ── Skills to develop next ────�
         const limitingHTML = limiting.length ? `
           <div style="background:rgba(206,0,88,0.06);border:1px solid rgba(206,0,88,0.2);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:0.82rem;color:rgba(244,243,233,0.75);line-height:1.55;">
             <strong style="color:var(--rubine-light);">What's holding your level:</strong>
-            ${limiting.join(' and ')}. You're working at ${LEVELS[overall]} overall — the craft in ${limiting.length > 1 ? 'these areas' : 'this area'} is what moves that, not doing more with AI.
+            ${joinList(limiting)}. You're working at ${LEVELS[overall]} overall — the craft in ${limiting.length > 1 ? 'these areas' : 'this area'} is what moves that, not doing more with AI.
           </div>` : '';
 
         const gapsHTML = gaps.length ? `
@@ -359,6 +386,54 @@ def main():
                         "", "retake date + confirmation text update")
     html = replace_span(html, "      // Log reminder automatically — no user action required",
                         r"^      \}$", "", "reminder logging fetch")
+
+    # 3f. Scores in the sidebar, beside the bars (Fabia: keep the bars, add a score).
+    html = html.replace(
+        "          plevel.textContent = complete ? LEVELS[level] : '—';",
+        "          plevel.innerHTML = complete\n"
+        "            ? LEVELS[level] + ' <span style=\"color:var(--text-muted);'\n"
+        "              + 'font-weight:400;\">' + getDimPoints(d.id) + '/' "
+        "+ DIM_POINTS_MAX + '</span>'\n"
+        "            : '—';", 1)
+
+    html = html.replace(
+        """      document.getElementById('progressCount').innerHTML = `${count} <span>of 5</span>`;""",
+        """      document.getElementById('progressCount').innerHTML = `${count} <span>of 5</span>`;
+
+      const totalEl = document.getElementById('totalScore');
+      if (totalEl) {
+        totalEl.innerHTML = count === 5
+          ? `${getTotalPoints()} <span>of ${DOMAINS.length * DIM_POINTS_MAX}</span>`
+          : `— <span>of ${DOMAINS.length * DIM_POINTS_MAX}</span>`;
+      }""", 1)
+
+    html = html.replace(
+        """            <div class="sidebar-progress">
+              <div class="progress-label">Dimensions Assessed</div>
+              <div class="progress-text" id="progressCount">0 <span>of 5</span></div>
+            </div>""",
+        """            <div class="sidebar-progress">
+              <div class="progress-label">Dimensions Assessed</div>
+              <div class="progress-text" id="progressCount">0 <span>of 5</span></div>
+            </div>
+            <div class="sidebar-progress">
+              <div class="progress-label">Your Score</div>
+              <div class="progress-text" id="totalScore">— <span>of 75</span></div>
+            </div>""", 1)
+
+    # Scores into the sheet payload, plus the per-question detail.
+    html = html.replace(
+        "        overallLevel: LEVELS[getOverallLevel()],\n",
+        "        overallLevel: LEVELS[getOverallLevel()],\n"
+        "        points: Object.fromEntries(DOMAINS.map(d => "
+        "[d.id, getDimPoints(d.id)])),\n"
+        "        pointsMax: DIM_POINTS_MAX,\n"
+        "        totalPoints: getTotalPoints(),\n"
+        "        totalPointsMax: DOMAINS.length * DIM_POINTS_MAX,\n"
+        "        answers: DOMAINS.flatMap(d => (dimState[d.id] "
+        "? dimState[d.id].responses : []).map(r =>\n"
+        "          ({ id: r.id, skill: r.skill, choice: r.choice + 1, "
+        "level: LEVELS[r.level] }))),\n", 1)
 
     # 4. Anchor button styles
     html = html.replace("    .rating-btn {", ANCHOR_CSS + "    .rating-btn {", 1)
