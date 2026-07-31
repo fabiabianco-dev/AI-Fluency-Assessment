@@ -48,9 +48,7 @@ function doPost(e) {
       handleReminder(data);
     } else {
       handleAssessment(data);
-      // OFF BY DEFAULT — see SEND_LEARNER_EMAIL below. Learners are already
-      // receiving an email from somewhere, and turning this on before that
-      // sender is identified would send two.
+      // Gated by SEND_LEARNER_EMAIL (see below).
       if (SEND_LEARNER_EMAIL) {
         // Wrapped separately: a mail failure must never lose a response that
         // has already been written to the sheet.
@@ -266,17 +264,11 @@ function renameDimCountHeaders() {
 
 // ── Learner email (NEW — your version sent none) ───────────────────────────────
 
-// ── SET THIS DELIBERATELY ──────────────────────────────────────────────────────
-//
-// false (default) — this script sends no email. The existing sender, whatever it
-//                   is, keeps working exactly as it does today. Nothing changes
-//                   for learners.
-// true            — this script sends the v2 results email with scores and skill
-//                   gaps. Only set this once you have confirmed nothing else is
-//                   sending one, or learners will receive two.
-//
-// Run auditEmailSenders() below to find the existing sender.
-const SEND_LEARNER_EMAIL = false;
+// true — every submission sends the branded results email.
+// Confirmed safe on 2026-07-31: Fabia submitted with the flag off and received
+// zero emails, so no other sender exists and there is no double-send risk.
+// Set to false to silence the email without touching anything else.
+const SEND_LEARNER_EMAIL = true;
 
 const LD_EMAIL = 'BU.Learning@BetterUp.co';
 
