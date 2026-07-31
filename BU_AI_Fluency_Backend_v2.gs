@@ -315,7 +315,9 @@ var F = {
 };
 
 function sendLearnerEmail(data) {
-  if (!data.email) return;
+  // Run sendTestEmail() from the editor to test — this function needs a
+  // submission's data and does nothing when run bare.
+  if (!data || !data.email) return;
 
   var firstName = (data.name || '').split(' ')[0] || 'there';
   var s   = data.scores || {};
