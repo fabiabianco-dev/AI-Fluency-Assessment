@@ -296,121 +296,215 @@ function joinList(items) {
   return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
 }
 
+// Built from the finalized BU · Learning Gmail-safe template (bu-branded-email).
+// RULES BAKED IN — do not "tidy" these away:
+//   tables for layout, bgcolor on every coloured cell AND table, lowercase hex,
+//   inline styles only, Georgia + Calibri only, 620px card, no hosted images.
+// Gmail's compose preview strips background colours. The only valid test is to
+// send to yourself and view it as a RECEIVED message. sendTestEmail() does that.
+
+var C = {
+  cream:    '#f4f3e9',
+  midnight: '#1d1925',
+  rubine:   '#ce0058',
+  white:    '#ffffff',
+  border:   'rgb(229,226,216)',
+  caption:  'rgb(136,136,136)',
+  title:    'rgb(118,118,118)',
+  footL:    'rgb(136,133,153)',
+  footR:    'rgb(168,165,181)',
+  ink:      'rgb(29,25,37)',
+  creamTxt: 'rgb(244,243,233)',
+  rub:      'rgb(206,0,88)'
+};
+var F = {
+  display: "Georgia,'Times New Roman',serif",
+  body:    "Calibri,'Segoe UI',Arial,sans-serif"
+};
+
 function sendLearnerEmail(data) {
   if (!data.email) return;
 
-  const firstName = (data.name || '').split(' ')[0] || 'there';
-  const s   = data.scores || {};
-  const p   = data.points || {};
-  const max = data.pointsMax || 15;
+  var firstName = (data.name || '').split(' ')[0] || 'there';
+  var s   = data.scores || {};
+  var p   = data.points || {};
+  var max = data.pointsMax || 15;
 
-  const scoresHTML = DIM_ORDER.map(function(dim) {
-    const label = s[dim] ? s[dim].label : 'Pre-Pilot';
-    const color = LEVEL_COLORS[label] || '#8B8A96';
-    const pts   = p[dim] === undefined ? '—' : p[dim];
+  // ── Score rows: dimension · score · level ──
+  var scoreRows = DIM_ORDER.map(function(dim) {
+    var label = s[dim] ? s[dim].label : 'Pre-Pilot';
+    var pts   = p[dim] === undefined ? '—' : p[dim];
     return '<tr>' +
-      '<td style="padding:10px 0;font-size:14px;color:#444;border-bottom:1px solid #f0f0f0;">' + DIM_LABELS[dim] + '</td>' +
-      '<td style="padding:10px 8px;text-align:right;border-bottom:1px solid #f0f0f0;white-space:nowrap;">' +
-        '<span style="font-size:15px;font-weight:700;color:#1a1a2e;">' + pts + '</span>' +
-        '<span style="font-size:12px;color:#999;"> / ' + max + '</span>' +
+      '<td bgcolor="' + C.white + '" style="padding:7px 0;font-family:' + F.body + ';font-size:14px;color:' + C.ink + '">' + DIM_LABELS[dim] + '</td>' +
+      '<td bgcolor="' + C.white + '" align="right" style="padding:7px 10px 7px 0;font-family:' + F.display + ';font-size:16px;white-space:nowrap;color:' + C.ink + '">' +
+        pts + '<span style="font-size:12px;color:' + C.caption + '"> / ' + max + '</span>' +
       '</td>' +
-      '<td style="padding:10px 0;text-align:right;border-bottom:1px solid #f0f0f0;width:110px;">' +
-        '<span style="display:inline-block;background:' + color + ';color:#fff;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:0.04em;">' + label + '</span>' +
-      '</td>' +
+      '<td bgcolor="' + C.white + '" align="right" style="padding:7px 0;font-family:' + F.body + ';font-size:11px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;color:' + C.rub + '">' + label + '</td>' +
     '</tr>';
   }).join('');
 
-  let totalHTML = '';
+  var totalRow = '';
   if (data.totalPoints !== undefined) {
-    totalHTML =
-      '<tr>' +
-        '<td style="padding:14px 0 0;font-size:13px;font-weight:700;color:#1a1a2e;">Total</td>' +
-        '<td style="padding:14px 8px 0;text-align:right;white-space:nowrap;">' +
-          '<span style="font-size:18px;font-weight:700;color:#CE0058;">' + data.totalPoints + '</span>' +
-          '<span style="font-size:12px;color:#999;"> / ' + (data.totalPointsMax || 75) + '</span>' +
-        '</td><td></td>' +
-      '</tr>';
+    totalRow = '<tr>' +
+      '<td bgcolor="' + C.white + '" style="padding:12px 0 0;border-top:1px solid ' + C.border + ';font-family:' + F.body + ';font-size:13px;font-weight:bold;color:' + C.ink + '">Total</td>' +
+      '<td bgcolor="' + C.white + '" align="right" style="padding:12px 10px 0 0;border-top:1px solid ' + C.border + ';font-family:' + F.display + ';font-size:19px;white-space:nowrap;color:' + C.rub + '">' +
+        data.totalPoints + '<span style="font-size:12px;color:' + C.caption + '"> / ' + (data.totalPointsMax || 75) + '</span>' +
+      '</td>' +
+      '<td bgcolor="' + C.white + '" style="border-top:1px solid ' + C.border + '"></td>' +
+    '</tr>';
   }
 
-  const limiting = data.limitingDimensions || [];
-  let limitingHTML = '';
+  // ── Skill gaps ──
+  var gaps = (data.skillGaps || []).slice(0, 5);
+  var gapsBlock = '';
+  if (gaps.length) {
+    var gapRows = gaps.map(function(g) {
+      var nowLine = g.anchor
+        ? '<div style="font-family:' + F.body + ';font-size:13px;line-height:1.6;padding-top:3px;color:' + C.caption + '"><em>Now:</em> ' + g.anchor + '</div>'
+        : '';
+      var nextLine = g.next
+        ? '<div style="font-family:' + F.body + ';font-size:13px;line-height:1.6;padding-top:2px;color:' + C.ink + '"><span style="color:' + C.rub + '">Next:</span> ' + g.next + '</div>'
+        : '';
+      return '<tr><td bgcolor="' + C.white + '" style="padding:0 0 14px">' +
+        '<div style="font-family:' + F.display + ';font-size:15px;color:' + C.ink + '">' + g.skill +
+          '<span style="font-family:' + F.body + ';font-size:11px;letter-spacing:1px;text-transform:uppercase;color:' + C.rub + '"> &nbsp;' + g.at + '</span></div>' +
+        nowLine + nextLine +
+      '</td></tr>';
+    }).join('');
+    gapsBlock =
+      '<tr><td style="padding-bottom:20px">' +
+        '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="' + C.white + '" style="border-left:3px solid ' + C.rubine + ';border-radius:0 8px 8px 0"><tbody>' +
+          '<tr><td bgcolor="' + C.white + '" style="padding:16px 20px">' +
+            '<div style="font-family:' + F.body + ';font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:bold;padding-bottom:12px;color:' + C.rub + '">Skills to develop next</div>' +
+            '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>' + gapRows + '</tbody></table>' +
+          '</td></tr>' +
+        '</tbody></table>' +
+      '</td></tr>';
+  }
+
+  // ── What's holding the level ──
+  var limiting = data.limitingDimensions || [];
+  var limitingBlock = '';
   if (limiting.length) {
-    limitingHTML =
-      '<div style="margin:0 32px 24px;padding:16px 20px;background:#fdf2f6;border:1px solid #f5d0de;border-radius:8px;">' +
-        '<div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#CE0058;margin-bottom:6px;">What\'s holding your level</div>' +
-        '<div style="font-size:13px;color:#555;line-height:1.6;">' +
-          joinList(limiting) + '. You\'re working at <strong>' + (data.overallLevel || '') +
-          '</strong> overall — the craft in ' + (limiting.length > 1 ? 'these areas' : 'this area') +
-          ' is what moves that, not doing more with AI.' +
-        '</div>' +
-      '</div>';
+    limitingBlock =
+      '<tr><td style="padding-bottom:20px">' +
+        '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="' + C.white + '" style="border:1px solid ' + C.rubine + ';border-radius:8px"><tbody>' +
+          '<tr><td bgcolor="' + C.white + '" style="padding:14px 18px">' +
+            '<div style="font-family:' + F.body + ';font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:bold;padding-bottom:6px;color:' + C.rub + '">What&rsquo;s holding your level</div>' +
+            '<div style="font-family:' + F.body + ';font-size:14px;line-height:1.65;color:' + C.ink + '">' +
+              joinList(limiting) + '. Your level is set by your weakest areas, not by your total &mdash; the craft in ' +
+              (limiting.length > 1 ? 'these areas' : 'this area') + ' is what moves it, not doing more with AI.' +
+            '</div>' +
+          '</td></tr>' +
+        '</tbody></table>' +
+      '</td></tr>';
   }
 
-  const gaps = (data.skillGaps || []).slice(0, 6);
-  const gapsHTML = gaps.length
-    ? gaps.map(function(g) {
-        const nextLine = g.next
-          ? '<div style="font-size:13px;color:#1a1a2e;line-height:1.55;margin-top:5px;">' +
-              '<span style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#CE0058;">Next: </span>' + g.next +
-            '</div>'
-          : '';
-        return '<div style="margin-bottom:12px;padding:16px 18px;background:#f9f9f9;border-radius:8px;border:1px solid #efefef;">' +
-          '<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:6px;">' + g.skill +
-            ' <span style="font-size:11px;font-weight:400;color:#999;">· ' + g.at + '</span></div>' +
-          (g.anchor ? '<div style="font-size:13px;color:#666;line-height:1.55;">' +
-            '<span style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#999;">Now: </span>' + g.anchor +
-          '</div>' : '') + nextLine +
-        '</div>';
-      }).join('')
-    : '<div style="font-size:13px;color:#666;line-height:1.6;">Your answers were consistent across all five dimensions — no single skill stands out as a gap relative to the rest of your practice.</div>';
+  var html =
+'<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="' + C.cream + '" style="margin:0;padding:24px 12px">' +
+'<tbody><tr><td align="center" bgcolor="' + C.cream + '">' +
 
-  const html =
-    '<div style="max-width:600px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Helvetica,Arial,sans-serif;background:#fff;">' +
+  '<table width="620" cellpadding="0" cellspacing="0" border="0" bgcolor="' + C.white + '" style="max-width:620px;width:100%;border-radius:12px;overflow:hidden;border:1px solid ' + C.border + '">' +
 
-    '<div style="background:#1D1925;padding:32px;">' +
-      '<div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#CE0058;margin-bottom:8px;">BU Learning</div>' +
-      '<div style="font-size:24px;font-weight:700;color:#F4F3E9;line-height:1.2;">Your AI Fluency Results</div>' +
-    '</div>' +
+    // HEADER
+    '<tbody><tr><td bgcolor="' + C.midnight + '" style="padding:30px 36px 24px">' +
+      '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>' +
+        '<tr><td style="font-family:' + F.display + ';font-size:13px;letter-spacing:0.5px;padding-bottom:18px;color:' + C.creamTxt + '">' +
+          '<span style="color:' + C.creamTxt + '">BU</span><span style="color:' + C.rub + '"> &middot; </span><span style="font-style:italic;color:' + C.rub + '">Learning</span>' +
+        '</td></tr>' +
+        '<tr><td style="font-family:' + F.body + ';font-size:11px;letter-spacing:4px;text-transform:uppercase;padding-bottom:12px;font-weight:bold;color:' + C.rub + '">' +
+          'AI Fluency Assessment' +
+        '</td></tr>' +
+        '<tr><td style="font-family:' + F.display + ';font-size:26px;line-height:1.35;font-weight:normal;color:' + C.creamTxt + '">' +
+          'You&rsquo;re done.<br>Here&rsquo;s where you stand.' +
+        '</td></tr>' +
+      '</tbody></table>' +
+    '</td></tr>' +
 
-    '<div style="padding:32px 32px 0;">' +
-      '<p style="font-size:16px;color:#1a1a2e;margin:0 0 10px;font-weight:600;">Hi ' + firstName + ',</p>' +
-      '<p style="font-size:14px;color:#555;line-height:1.7;margin:0;">Here\'s your BU AI Fluency Assessment summary. These results are yours — your individual scores stay private and are never shared with your manager or used in performance evaluations.</p>' +
-    '</div>' +
+    // RUBINE RULE
+    '<tr><td bgcolor="' + C.rubine + '" style="font-size:0;line-height:0;height:4px">&nbsp;</td></tr>' +
 
-    '<div style="padding:28px 32px 0;">' +
-      '<div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#999;margin-bottom:14px;">Your RANGE Profile</div>' +
-      '<table style="width:100%;border-collapse:collapse;">' + scoresHTML + totalHTML + '</table>' +
-      '<p style="font-size:12px;color:#999;line-height:1.6;margin:14px 0 0;">Your level is set by your weakest areas, not by your total — a strong score in one dimension doesn\'t carry the others.</p>' +
-    '</div>' +
+    // BODY
+    '<tr><td bgcolor="' + C.cream + '" style="padding:32px 36px">' +
+      '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>' +
 
-    '<div style="height:1px;background:#f0f0f0;margin:28px 32px;"></div>' +
+        '<tr><td style="font-family:' + F.display + ';font-size:17px;padding-bottom:18px;color:' + C.ink + '">' +
+          'Hi ' + firstName + ',' +
+        '</td></tr>' +
 
-    limitingHTML +
+        // Dark callout — completion confirmation
+        '<tr><td style="padding-bottom:24px">' +
+          '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="' + C.midnight + '" style="border-radius:8px"><tbody>' +
+            '<tr><td bgcolor="' + C.midnight + '" style="padding:20px 24px;font-family:' + F.display + ';font-size:16px;line-height:1.6;border-radius:8px;color:' + C.creamTxt + '">' +
+              'Your assessment is complete and your results are recorded. You&rsquo;re working at ' +
+              '<span style="font-style:italic;color:' + C.rub + '">' + (data.overallLevel || '') + '</span> overall.' +
+            '</td></tr>' +
+          '</tbody></table>' +
+        '</td></tr>' +
 
-    '<div style="padding:0 32px 8px;">' +
-      '<div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#999;margin-bottom:14px;">Skills to Develop Next</div>' +
-      gapsHTML +
-    '</div>' +
+        '<tr><td style="font-family:' + F.body + ';font-size:15px;line-height:1.7;padding-bottom:20px;color:' + C.ink + '">' +
+          'These results are yours. Your individual scores are never shared with your manager and are never used in performance evaluations.' +
+        '</td></tr>' +
 
-    '<div style="margin:20px 32px 32px;padding:20px 24px;background:#fdf2f6;border:1px solid #f5d0de;border-radius:8px;">' +
-      '<div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#CE0058;margin-bottom:10px;">What happens next</div>' +
-      '<p style="font-size:13px;color:#444;line-height:1.7;margin:0 0 10px;">Your answers go to the L&amp;D team, who use them to recommend the right program and curate your learning path — so you can close these skills quickly instead of hunting for resources yourself. Now that you\'ve completed the assessment, invitations for programs are coming shortly.</p>' +
-      '<p style="font-size:13px;color:#555;line-height:1.7;margin:0;">If you\'d like help sooner, or there\'s a skill you want to develop that didn\'t come through in your results, email the BU Learning team at <a href="mailto:' + LD_EMAIL + '" style="color:#CE0058;text-decoration:none;">' + LD_EMAIL + '</a>. The team will take it into account when making recommendations for courses — and may even build a whole new program based on your input.</p>' +
-    '</div>' +
+        // Scores
+        '<tr><td style="padding-bottom:20px">' +
+          '<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="' + C.white + '" style="border-left:3px solid ' + C.rubine + ';border-radius:0 8px 8px 0"><tbody>' +
+            '<tr><td bgcolor="' + C.white + '" style="padding:16px 20px">' +
+              '<div style="font-family:' + F.body + ';font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:bold;padding-bottom:10px;color:' + C.rub + '">Your RANGE profile</div>' +
+              '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>' + scoreRows + totalRow + '</tbody></table>' +
+            '</td></tr>' +
+          '</tbody></table>' +
+        '</td></tr>' +
 
-    '<div style="background:#f9f9f9;padding:20px 32px;text-align:center;border-top:1px solid #efefef;">' +
-      '<div style="font-size:12px;color:#999;">Questions about your results or next steps?</div>' +
-      '<div style="font-size:12px;color:#999;margin-top:4px;">Reach out to <a href="mailto:' + LD_EMAIL + '" style="color:#CE0058;text-decoration:none;">' + LD_EMAIL + '</a></div>' +
-    '</div>' +
+        limitingBlock +
+        gapsBlock +
 
-    '</div>';
+        // What happens next
+        '<tr><td style="padding-bottom:8px">' +
+          '<table cellpadding="0" cellspacing="0" border="0"><tbody><tr><td bgcolor="' + C.rubine + '" style="font-size:0;line-height:0;height:2px;width:40px">&nbsp;</td></tr></tbody></table>' +
+        '</td></tr>' +
+        '<tr><td style="font-family:' + F.body + ';font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:bold;padding:12px 0 8px;color:' + C.rub + '">' +
+          'What happens next' +
+        '</td></tr>' +
+        '<tr><td style="font-family:' + F.body + ';font-size:15px;line-height:1.7;padding-bottom:14px;color:' + C.ink + '">' +
+          'Your answers go to the L&amp;D team, who use them to recommend the right program and curate your learning path &mdash; so you can close these skills quickly instead of hunting for resources yourself. Now that you&rsquo;ve completed the assessment, invitations for programs are coming shortly.' +
+        '</td></tr>' +
+        '<tr><td style="font-family:' + F.body + ';font-size:15px;line-height:1.7;padding-bottom:24px;color:' + C.ink + '">' +
+          'If you&rsquo;d like help sooner, or there&rsquo;s a skill you want to develop that didn&rsquo;t come through in your results, email us at ' +
+          '<a href="mailto:' + LD_EMAIL + '" target="_blank" style="color:' + C.rub + ';text-decoration:none">' + LD_EMAIL + '</a>. ' +
+          'We&rsquo;ll take it into account when making recommendations for courses &mdash; and may even build a whole new program based on your input.' +
+        '</td></tr>' +
+
+        // Signature
+        '<tr><td style="font-family:' + F.display + ';font-size:15px;line-height:1.8;color:' + C.ink + '">' +
+          'Warmly,<br>' +
+          '<strong>The BU Learning Team</strong><br>' +
+          '<span style="color:' + C.title + '">' + LD_EMAIL + '</span>' +
+        '</td></tr>' +
+
+      '</tbody></table>' +
+    '</td></tr>' +
+
+    // FOOTER
+    '<tr><td bgcolor="' + C.midnight + '" style="padding:16px 36px">' +
+      '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr>' +
+        '<td style="font-family:' + F.body + ';font-size:11px;color:' + C.footL + '">AI Fluency Assessment &middot; FY27</td>' +
+        '<td align="right" style="font-family:' + F.display + ';font-size:12px;font-style:italic;color:' + C.footR + '">BetterUp</td>' +
+      '</tr></tbody></table>' +
+    '</td></tr>' +
+
+  '</tbody></table>' +
+
+'</td></tr></tbody>' +
+'</table>';
 
   MailApp.sendEmail({
     to:       data.email,
-    subject:  'Your BU AI Fluency Results — ' + (data.name || ''),
+    subject:  'Your AI Fluency results — assessment complete',
     htmlBody: html
   });
 }
+
 
 // ── Utilities (yours, unchanged) ───────────────────────────────────────────────
 
