@@ -1,52 +1,38 @@
-// ── BU AI Fluency Assessment — Apps Script Backend (v2) ───────────────────────
+// ── BU AI Fluency Assessment — Apps Script Backend ────────────────────────────
 //
-// Written against the LIVE deployed script Fabia provided, not the copy in
-// baseline/ — the two had diverged. Preserved from the live version:
-//   • doGet() serving the page as a GAS HTML template (do not change this —
-//     it is what makes GAS_URL resolve; see note below)
-//   • getOrCreateSheet() with RESULTS_SHEET_ID in Script Properties, writing to
-//     a separate spreadsheet rather than the container
+// RECONCILED with the live deployed script. This is Fabia's version plus
+// additions — nothing of hers was removed or renamed, so anything downstream of
+// the 'Responses' tab keeps working.
 //
-// GAS_URL: RESOLVED. Because doGet() calls createTemplateFromFile('index')
-// .evaluate(), the page IS served as a template, so
-// '<?= ScriptApp.getService().getUrl() ?>' evaluates and submissions post
-// correctly. The silent-submission-loss risk flagged earlier does not apply to
-// this deployment. The one requirement is that the HTML file remain named
-// `index` in the Apps Script project.
+// WHAT IS UNCHANGED FROM YOUR VERSION
+//   doGet, doPost, handleReminder, getOrCreateSheet, setupResponsesSheet,
+//   setupRemindersSheet, getOverallLabel, getSheetUrl, addDimAvgHeaders —
+//   all byte-identical in behaviour. Same 'Responses' tab, same 43 columns in
+//   the same order, same 'Reminders' tab.
 //
-// NEW IN v2:
-//   • sendLearnerEmail(). The live script had no MailApp/GmailApp call, so no
-//     results email was being sent. This adds it.
-//   • 'Responses v2' tab. The v1 schema stored course names, AFS eligibility,
-//     skill priorities and per-level averages — none of which v2 produces. A new
-//     tab keeps existing data intact rather than writing mismatched columns
-//     under v1 headers.
-//   • Scores: 0–15 per dimension, 0–75 total, plus one column per question.
-//   • Reminder handling removed — the retake is out of scope.
+// WHAT WAS ADDED
+//   1. sendLearnerEmail(). Your version has no MailApp/GmailApp call anywhere,
+//      so no results email was being sent from this script. This adds one.
+//      Run sendTestEmail() once to check it before anyone else sees it.
+//   2. 24 new columns appended after AQ, so v2's scores and skill gaps are
+//      captured: total score, per-dimension score, limiting dimensions, skill
+//      gaps, and one column per question. Existing columns A–AQ untouched.
+//   3. ensureV2Headers() — adds those headers to your existing sheet on the
+//      next submission, without touching existing rows.
 //
-// SETUP:
-//   1. Paste over the existing script (keep the HTML file named `index`)
-//   2. Deploy → Manage deployments → ✏ Edit → New version → Deploy
-//   3. Submit one test response and confirm a row lands in 'Responses v2'
-//      and the email arrives
-//   4. Optional trigger: triggerWeeklyDigest → Time-driven → Week timer (Monday)
-
-var RESPONSES_SHEET = 'Responses v2';
-var LD_EMAIL        = 'BU.Learning@BetterUp.co';
-
-var DIM_ORDER  = ['reach', 'autonomy', 'navigation', 'generalization', 'execution'];
-var DIM_LABELS = {
-  reach: 'Reach', autonomy: 'Autonomy', navigation: 'Navigation',
-  generalization: 'Generalization', execution: 'Execution Fidelity'
-};
-var LEVEL_COLORS = {
-  'Pre-Pilot': '#8B8A96', 'Pilot': '#CE0058',
-  'Builder': '#7B5EA7', 'Multiplier': '#2E7D52'
-};
+// NOTE ON COLUMNS X–AQ (the 20 "Avg" columns)
+//   The v2 page still sends dimAvgs, so these keep filling. But the meaning
+//   changed: the value is now HOW MANY of that dimension's answers landed at
+//   that level, not an average rating. Run renameDimCountHeaders() once to
+//   relabel them accurately. Left as-is by default in case you have formulas
+//   referencing the current header text.
+//
+// NOTE ON COURSE COLUMNS S–V
+//   v2 makes no course recommendations, so these write blank. No error —
+//   `data.courses || []` handles it.
 
 // ── Entry points ───────────────────────────────────────────────────────────────
 
-// Unchanged from the live script. Serving as a template is load-bearing.
 function doGet() {
   return HtmlService.createTemplateFromFile('index')
     .evaluate()
@@ -56,14 +42,26 @@ function doGet() {
 
 function doPost(e) {
   try {
-    var data = JSON.parse(e.postData.contents);
-    handleAssessment(data);
-    // Email failure must not lose the response — the row is already written.
-    try {
-      sendLearnerEmail(data);
-    } catch (mailErr) {
-      Logger.log('Email failed for ' + (data.email || '?') + ': ' + mailErr.message);
+    const data = JSON.parse(e.postData.contents);
+
+    if (data.type === 'reminder') {
+      handleReminder(data);
+    } else {
+      handleAssessment(data);
+      // OFF BY DEFAULT — see SEND_LEARNER_EMAIL below. Learners are already
+      // receiving an email from somewhere, and turning this on before that
+      // sender is identified would send two.
+      if (SEND_LEARNER_EMAIL) {
+        // Wrapped separately: a mail failure must never lose a response that
+        // has already been written to the sheet.
+        try {
+          sendLearnerEmail(data);
+        } catch (mailErr) {
+          Logger.log('Email failed for ' + (data.email || '?') + ': ' + mailErr.message);
+        }
+      }
     }
+
     return ContentService
       .createTextOutput(JSON.stringify({ status: 'ok' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -77,95 +75,220 @@ function doPost(e) {
 // ── Sheet write ────────────────────────────────────────────────────────────────
 
 function handleAssessment(data) {
-  var sheet = getOrCreateSheet(RESPONSES_SHEET);
+  const sheet = getOrCreateSheet('Responses');
 
-  var s       = data.scores || {};
-  var p       = data.points || {};
-  var answers = data.answers || [];
+  const sp = data.skillPriorities || [];
+  const courses = data.courses || [];
+  const fn = data['function'] || '';
+  const da = data.dimAvgs || {};
 
-  ensureHeaders(sheet, answers);
+  const afsLabels = {
+    recommended: 'Eligible — Apply for AFS Next',
+    teaser:      'Getting Close — 1–2 Dims Needed',
+    not_yet:     'Not Yet — Build Foundation First'
+  };
+  const afsLabel = afsLabels[data.afsNextStatus] || data.afsNextStatus || '';
 
-  var row = [
-    data.timestamp || new Date().toISOString(),
-    data.name  || '',
-    data.email || '',
-    data['function'] || '',
-    data.subfunction || '',
-    data.tool  || '',
-    data.peopleManager === true ? 'Yes' : data.peopleManager === false ? 'No' : '',
-    // Overall comes straight from the page's gated calculation. Not re-derived
-    // here: v1 recomputed it from an average, which is exactly the scoring the
-    // rebuild removed.
-    data.overallLevel || '',
+  const avg = (dim, level) => (da[dim] && da[dim][level] !== undefined) ? da[dim][level] : '';
+
+  // ── v2 additions ──
+  const answers = data.answers || [];
+  const p = data.points || {};
+  ensureV2Headers(sheet, answers);
+
+  const v2Cols = [
     data.totalPoints    === undefined ? '' : data.totalPoints,
-    data.totalPointsMax === undefined ? '' : data.totalPointsMax
-  ];
-  DIM_ORDER.forEach(function(dim) {
-    row.push(s[dim] ? s[dim].label : '');
-    row.push(p[dim] === undefined ? '' : p[dim]);
-  });
-  row.push((data.limitingDimensions || []).join(', '));
-  row.push((data.skillGaps || []).map(function(g) {
-    return g.skill + ' (' + g.at + ')';
-  }).join(' | '));
-  // One column per question — this is what lets gaps be counted across the
-  // population, which is the input for designing the new programmes.
-  answers.forEach(function(a) { row.push(a.choice); });
+    data.totalPointsMax === undefined ? '' : data.totalPointsMax,
+    p.reach          === undefined ? '' : p.reach,
+    p.autonomy       === undefined ? '' : p.autonomy,
+    p.navigation     === undefined ? '' : p.navigation,
+    p.generalization === undefined ? '' : p.generalization,
+    p.execution      === undefined ? '' : p.execution,
+    (data.limitingDimensions || []).join(', '),
+    (data.skillGaps || []).map(function(g) { return g.skill + ' (' + g.at + ')'; }).join(' | ')
+  ].concat(answers.map(function(a) { return a.choice; }));
 
-  sheet.appendRow(row);
+  sheet.appendRow([
+    // A–G: Identity
+    data.timestamp,
+    data.name,
+    data.email,
+    fn,
+    data.subfunction || '',
+    data.tool || '',
+    data.peopleManager === true ? 'Yes' : data.peopleManager === false ? 'No' : '',
+    // H–L: RANGE level labels
+    data.scores.reach.label,
+    data.scores.autonomy.label,
+    data.scores.navigation.label,
+    data.scores.generalization.label,
+    data.scores.execution.label,
+    // M–O: Summary
+    data.avgLevel,
+    // Prefer the page's gated overall level when present; fall back to your
+    // average-derived label so older payloads still work.
+    data.overallLevel || getOverallLabel(data.avgLevel),
+    (data.gapDimensions || []).join(', '),
+    // P–R: Skill priorities
+    sp[0] || '',
+    sp[1] || '',
+    sp[2] || '',
+    // S–V: Courses (blank in v2 — no course recommendations)
+    courses[0] ? courses[0].name : '',
+    courses[1] ? courses[1].name : '',
+    courses[2] ? courses[2].name : '',
+    courses[3] ? courses[3].name : '',
+    // W: AFS eligibility
+    afsLabel,
+    // X–AA: Reach per-level counts
+    avg('reach', 0), avg('reach', 1), avg('reach', 2), avg('reach', 3),
+    // AB–AE: Autonomy
+    avg('autonomy', 0), avg('autonomy', 1), avg('autonomy', 2), avg('autonomy', 3),
+    // AF–AI: Navigation
+    avg('navigation', 0), avg('navigation', 1), avg('navigation', 2), avg('navigation', 3),
+    // AJ–AM: Generalization
+    avg('generalization', 0), avg('generalization', 1), avg('generalization', 2), avg('generalization', 3),
+    // AN–AQ: Execution
+    avg('execution', 0), avg('execution', 1), avg('execution', 2), avg('execution', 3)
+  ].concat(v2Cols));  // AR onwards: v2 scores, gaps, and per-question answers
 }
 
-function v2Headers(answers) {
-  var headers = [
-    'Timestamp', 'Name', 'Email', 'Team', 'Sub-Team', 'AI Tool', 'People Manager',
-    'Overall Level', 'Total Score', 'Total Max'
-  ];
-  DIM_ORDER.forEach(function(dim) {
-    headers.push(DIM_LABELS[dim] + ' Level');
-    headers.push(DIM_LABELS[dim] + ' Score (0-15)');
-  });
-  headers.push('Limiting Dimensions', 'Skill Gaps');
-  (answers || []).forEach(function(a) { headers.push(a.id + ' — ' + a.skill); });
-  return headers;
+function handleReminder(data) {
+  const sheet = getOrCreateSheet('Reminders');
+  sheet.appendRow([
+    new Date().toISOString(),
+    data.name,
+    data.email,
+    data.retakeDate
+  ]);
 }
 
-// Preserved from the live script: separate spreadsheet, id in Script Properties.
 function getOrCreateSheet(sheetName) {
-  var props = PropertiesService.getScriptProperties();
-  var ssId  = props.getProperty('RESULTS_SHEET_ID');
+  const props = PropertiesService.getScriptProperties();
+  let ssId = props.getProperty('RESULTS_SHEET_ID');
 
-  var ss = null;
+  let ss;
   if (ssId) {
-    try { ss = SpreadsheetApp.openById(ssId); } catch (e) { ss = null; }
+    try {
+      ss = SpreadsheetApp.openById(ssId);
+    } catch (e) {
+      ss = null;
+    }
   }
+
   if (!ss) {
     ss = SpreadsheetApp.create('AI Fluency Assessment — Responses');
     props.setProperty('RESULTS_SHEET_ID', ss.getId());
+    setupResponsesSheet(ss.getActiveSheet());
   }
 
-  var sheet = ss.getSheetByName(sheetName);
+  let sheet = ss.getSheetByName(sheetName);
   if (!sheet) {
     sheet = ss.insertSheet(sheetName);
-    sheet.setFrozenRows(1);
+    if (sheetName === 'Responses') {
+      setupResponsesSheet(sheet);
+    } else if (sheetName === 'Reminders') {
+      setupRemindersSheet(sheet);
+    }
   }
+
   return sheet;
 }
 
-// Headers are written on the first submission, once the question set is known.
-function ensureHeaders(sheet, answers) {
-  if (sheet.getLastRow() > 0) return;
-  var headers = v2Headers(answers);
-  sheet.appendRow(headers);
+function setupResponsesSheet(sheet) {
+  sheet.setName('Responses');
+  sheet.appendRow([
+    'Timestamp', 'Name', 'Email', 'Team', 'Sub-Team', 'AI Tool', 'People Manager',
+    'R — Reach', 'A — Autonomy', 'N — Navigation', 'G — Generalization', 'E — Execution Fidelity',
+    'Avg RANGE Score', 'Overall Level', 'Gap Dimensions',
+    'Skill Priority 1', 'Skill Priority 2', 'Skill Priority 3',
+    'Skills Course 1', 'Skills Course 2', 'Function Course 1', 'Function Course 2',
+    'AFS Next Eligibility',
+    'R Pre-Pilot Avg', 'R Pilot Avg', 'R Builder Avg', 'R Multiplier Avg',
+    'A Pre-Pilot Avg', 'A Pilot Avg', 'A Builder Avg', 'A Multiplier Avg',
+    'N Pre-Pilot Avg', 'N Pilot Avg', 'N Builder Avg', 'N Multiplier Avg',
+    'G Pre-Pilot Avg', 'G Pilot Avg', 'G Builder Avg', 'G Multiplier Avg',
+    'E Pre-Pilot Avg', 'E Pilot Avg', 'E Builder Avg', 'E Multiplier Avg'
+  ]);
   sheet.setFrozenRows(1);
-  sheet.getRange(1, 1, 1, headers.length)
-    .setFontWeight('bold')
-    .setBackground('#1D1925')
-    .setFontColor('#F4F3E9');
-  sheet.setColumnWidth(1, 180);
-  sheet.setColumnWidth(3, 220);
 }
 
-// ── Learner email ──────────────────────────────────────────────────────────────
+function setupRemindersSheet(sheet) {
+  sheet.setName('Reminders');
+  sheet.appendRow(['Logged At', 'Name', 'Email', 'Retake Date']);
+  sheet.setFrozenRows(1);
+}
+
+function getOverallLabel(avg) {
+  if (avg < 0.5) return 'Pre-Pilot';
+  if (avg < 1.5) return 'Pilot';
+  if (avg < 2.5) return 'Builder';
+  return 'Multiplier';
+}
+
+// ── v2 columns (appended after AQ) ─────────────────────────────────────────────
+
+// Adds the v2 headers once, in place, without touching existing rows. Safe to
+// call on every submission — it returns immediately if they are already there.
+function ensureV2Headers(sheet, answers) {
+  if (sheet.getLastRow() === 0) return;              // setupResponsesSheet handles a fresh sheet
+  const lastCol = sheet.getLastColumn();
+  const existing = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  if (existing.indexOf('Total Score') > -1) return;  // already migrated
+
+  const headers = [
+    'Total Score', 'Total Max',
+    'R Score (0-15)', 'A Score (0-15)', 'N Score (0-15)',
+    'G Score (0-15)', 'E Score (0-15)',
+    'Limiting Dimensions', 'Skill Gaps'
+  ].concat((answers || []).map(function(a) { return a.id + ' — ' + a.skill; }));
+
+  sheet.getRange(1, lastCol + 1, 1, headers.length).setValues([headers]);
+  Logger.log('v2 headers added from column ' + (lastCol + 1));
+}
+
+// Optional, run once. Columns X–AQ now hold counts, not averages — this makes
+// the labels say so. Skip it if you have formulas referencing the old text.
+function renameDimCountHeaders() {
+  const id = PropertiesService.getScriptProperties().getProperty('RESULTS_SHEET_ID');
+  if (!id) { Logger.log('No sheet found.'); return; }
+  const sheet = SpreadsheetApp.openById(id).getSheetByName('Responses');
+  if (!sheet) { Logger.log('No Responses tab.'); return; }
+  const renamed = [];
+  ['R', 'A', 'N', 'G', 'E'].forEach(function(d) {
+    ['Pre-Pilot', 'Pilot', 'Builder', 'Multiplier'].forEach(function(l) {
+      renamed.push(d + ' answers at ' + l);
+    });
+  });
+  sheet.getRange(1, 24, 1, 20).setValues([renamed]);  // X..AQ
+  Logger.log('Renamed columns X–AQ to answer counts.');
+}
+
+// ── Learner email (NEW — your version sent none) ───────────────────────────────
+
+// ── SET THIS DELIBERATELY ──────────────────────────────────────────────────────
+//
+// false (default) — this script sends no email. The existing sender, whatever it
+//                   is, keeps working exactly as it does today. Nothing changes
+//                   for learners.
+// true            — this script sends the v2 results email with scores and skill
+//                   gaps. Only set this once you have confirmed nothing else is
+//                   sending one, or learners will receive two.
+//
+// Run auditEmailSenders() below to find the existing sender.
+const SEND_LEARNER_EMAIL = false;
+
+const LD_EMAIL = 'BU.Learning@BetterUp.co';
+
+const DIM_ORDER  = ['reach', 'autonomy', 'navigation', 'generalization', 'execution'];
+const DIM_LABELS = {
+  reach: 'Reach', autonomy: 'Autonomy', navigation: 'Navigation',
+  generalization: 'Generalization', execution: 'Execution Fidelity'
+};
+const LEVEL_COLORS = {
+  'Pre-Pilot': '#8B8A96', 'Pilot': '#CE0058',
+  'Builder': '#7B5EA7', 'Multiplier': '#2E7D52'
+};
 
 // "A, B and C" rather than "A and B and C".
 function joinList(items) {
@@ -176,15 +299,15 @@ function joinList(items) {
 function sendLearnerEmail(data) {
   if (!data.email) return;
 
-  var firstName = (data.name || '').split(' ')[0] || 'there';
-  var s   = data.scores || {};
-  var p   = data.points || {};
-  var max = data.pointsMax || 15;
+  const firstName = (data.name || '').split(' ')[0] || 'there';
+  const s   = data.scores || {};
+  const p   = data.points || {};
+  const max = data.pointsMax || 15;
 
-  var scoresHTML = DIM_ORDER.map(function(dim) {
-    var label = s[dim] ? s[dim].label : 'Pre-Pilot';
-    var color = LEVEL_COLORS[label] || '#8B8A96';
-    var pts   = p[dim] === undefined ? '—' : p[dim];
+  const scoresHTML = DIM_ORDER.map(function(dim) {
+    const label = s[dim] ? s[dim].label : 'Pre-Pilot';
+    const color = LEVEL_COLORS[label] || '#8B8A96';
+    const pts   = p[dim] === undefined ? '—' : p[dim];
     return '<tr>' +
       '<td style="padding:10px 0;font-size:14px;color:#444;border-bottom:1px solid #f0f0f0;">' + DIM_LABELS[dim] + '</td>' +
       '<td style="padding:10px 8px;text-align:right;border-bottom:1px solid #f0f0f0;white-space:nowrap;">' +
@@ -197,7 +320,7 @@ function sendLearnerEmail(data) {
     '</tr>';
   }).join('');
 
-  var totalHTML = '';
+  let totalHTML = '';
   if (data.totalPoints !== undefined) {
     totalHTML =
       '<tr>' +
@@ -209,8 +332,8 @@ function sendLearnerEmail(data) {
       '</tr>';
   }
 
-  var limiting = data.limitingDimensions || [];
-  var limitingHTML = '';
+  const limiting = data.limitingDimensions || [];
+  let limitingHTML = '';
   if (limiting.length) {
     limitingHTML =
       '<div style="margin:0 32px 24px;padding:16px 20px;background:#fdf2f6;border:1px solid #f5d0de;border-radius:8px;">' +
@@ -223,10 +346,10 @@ function sendLearnerEmail(data) {
       '</div>';
   }
 
-  var gaps = (data.skillGaps || []).slice(0, 6);
-  var gapsHTML = gaps.length
+  const gaps = (data.skillGaps || []).slice(0, 6);
+  const gapsHTML = gaps.length
     ? gaps.map(function(g) {
-        var nextLine = g.next
+        const nextLine = g.next
           ? '<div style="font-size:13px;color:#1a1a2e;line-height:1.55;margin-top:5px;">' +
               '<span style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#CE0058;">Next: </span>' + g.next +
             '</div>'
@@ -234,14 +357,14 @@ function sendLearnerEmail(data) {
         return '<div style="margin-bottom:12px;padding:16px 18px;background:#f9f9f9;border-radius:8px;border:1px solid #efefef;">' +
           '<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:6px;">' + g.skill +
             ' <span style="font-size:11px;font-weight:400;color:#999;">· ' + g.at + '</span></div>' +
-          '<div style="font-size:13px;color:#666;line-height:1.55;">' +
-            '<span style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#999;">Now: </span>' + (g.anchor || '') +
-          '</div>' + nextLine +
+          (g.anchor ? '<div style="font-size:13px;color:#666;line-height:1.55;">' +
+            '<span style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#999;">Now: </span>' + g.anchor +
+          '</div>' : '') + nextLine +
         '</div>';
       }).join('')
     : '<div style="font-size:13px;color:#666;line-height:1.6;">Your answers were consistent across all five dimensions — no single skill stands out as a gap relative to the rest of your practice.</div>';
 
-  var html =
+  const html =
     '<div style="max-width:600px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Helvetica,Arial,sans-serif;background:#fff;">' +
 
     '<div style="background:#1D1925;padding:32px;">' +
@@ -289,18 +412,65 @@ function sendLearnerEmail(data) {
   });
 }
 
-// ── Utilities ──────────────────────────────────────────────────────────────────
+// ── Utilities (yours, unchanged) ───────────────────────────────────────────────
 
+// Run once after first deploy to confirm the sheet URL
 function getSheetUrl() {
-  var id = PropertiesService.getScriptProperties().getProperty('RESULTS_SHEET_ID');
+  const id = PropertiesService.getScriptProperties().getProperty('RESULTS_SHEET_ID');
   if (id) Logger.log(SpreadsheetApp.openById(id).getUrl());
   else Logger.log('No sheet yet — complete an assessment first.');
 }
 
-// Run once to confirm the email renders and sends before launch. Uses a
-// representative payload; sends to whoever runs it.
+// ── Diagnostic: what is emailing the learners? ─────────────────────────────────
+// Run this from THIS project, then run it again from the Sheet's bound script
+// (Extensions → Apps Script). It lists every trigger, which is where an
+// automatic email almost always comes from.
+function auditEmailSenders() {
+  const out = [];
+  out.push('=== Triggers in this project ===');
+  const triggers = ScriptApp.getProjectTriggers();
+  if (!triggers.length) {
+    out.push('  none');
+  } else {
+    triggers.forEach(function(t) {
+      out.push('  function: ' + t.getHandlerFunction() +
+               '  |  event: ' + t.getEventType() +
+               '  |  source: ' + t.getTriggerSource());
+    });
+  }
+
+  out.push('');
+  out.push('=== Results spreadsheet ===');
+  const id = PropertiesService.getScriptProperties().getProperty('RESULTS_SHEET_ID');
+  if (id) {
+    const ss = SpreadsheetApp.openById(id);
+    out.push('  ' + ss.getName());
+    out.push('  ' + ss.getUrl());
+    out.push('  tabs: ' + ss.getSheets().map(function(sh) { return sh.getName(); }).join(', '));
+  } else {
+    out.push('  RESULTS_SHEET_ID not set');
+  }
+
+  out.push('');
+  out.push('=== Daily mail quota remaining ===');
+  // If something in YOUR account has been sending, this is well below the cap.
+  out.push('  ' + MailApp.getRemainingDailyQuota() + ' of 1500 (Workspace)');
+  out.push('  A number well below 1500 means this account has already sent mail today.');
+
+  out.push('');
+  out.push('=== Cannot be read by script — check the UI ===');
+  out.push('  1. Left sidebar of this editor: how many .gs files? Open each and');
+  out.push('     search for MailApp, GmailApp, or sendEmail.');
+  out.push('  2. The Sheet → Tools → Notification rules (these email on change).');
+  out.push('  3. The Sheet → Extensions → Apps Script: its own files and triggers.');
+  out.push('  4. Any Zapier / Make / Workspace add-on watching the Sheet.');
+
+  Logger.log(out.join('\n'));
+}
+
+// Run once to check the email renders and sends, before any learner sees it.
 function sendTestEmail() {
-  var me = Session.getActiveUser().getEmail();
+  const me = Session.getActiveUser().getEmail();
   sendLearnerEmail({
     name: 'Test Learner', email: me,
     overallLevel: 'Pilot', totalPoints: 42, totalPointsMax: 75, pointsMax: 15,
@@ -320,68 +490,22 @@ function sendTestEmail() {
   Logger.log('Test email sent to ' + me);
 }
 
-// ── Weekly digest to L&D ───────────────────────────────────────────────────────
-// The aggregate view is the primary deliverable: where the gaps concentrate is
-// what the new programmes get designed from.
-
-function triggerWeeklyDigest() {
-  var props = PropertiesService.getScriptProperties();
-  var ssId  = props.getProperty('RESULTS_SHEET_ID');
-  if (!ssId) return;
-
-  var ss    = SpreadsheetApp.openById(ssId);
-  var sheet = ss.getSheetByName(RESPONSES_SHEET);
-  if (!sheet || sheet.getLastRow() < 2) return;
-
-  var oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-  var values  = sheet.getDataRange().getValues();
-  var headers = values[0];
-  var rows = values.slice(1).filter(function(r) { return new Date(r[0]) >= oneWeekAgo; });
-  if (rows.length === 0) return;
-
-  var col = function(name) { return headers.indexOf(name); };
-  var avg = function(idx) {
-    var vals = rows.map(function(r) { return Number(r[idx]); })
-                   .filter(function(v) { return !isNaN(v); });
-    return vals.length
-      ? (vals.reduce(function(a, b) { return a + b; }, 0) / vals.length).toFixed(1)
-      : 'n/a';
-  };
-  var tally = function(idx, sep) {
-    var counts = {};
-    rows.forEach(function(r) {
-      String(r[idx] || '').split(sep).forEach(function(v) {
-        v = v.trim();
-        if (v) counts[v] = (counts[v] || 0) + 1;
-      });
-    });
-    return counts;
-  };
-  var rank = function(counts, limit) {
-    var keys = Object.keys(counts).sort(function(a, b) { return counts[b] - counts[a]; });
-    if (limit) keys = keys.slice(0, limit);
-    return keys.map(function(k) { return '  ' + counts[k] + '× ' + k; }).join('\n') || '  none';
-  };
-
-  var scoreLines = DIM_ORDER.map(function(dim) {
-    var i = col(DIM_LABELS[dim] + ' Score (0-15)');
-    return '  ' + DIM_LABELS[dim] + ': ' + (i > -1 ? avg(i) : 'n/a') + ' / 15';
-  }).join('\n');
-
-  var body =
-    'New submissions this week: ' + rows.length + '\n\n' +
-    'Average score per dimension:\n' + scoreLines + '\n\n' +
-    'Overall level distribution:\n' + rank(tally(col('Overall Level'), ',')) + '\n\n' +
-    'Dimensions holding people back:\n' + rank(tally(col('Limiting Dimensions'), ',')) + '\n\n' +
-    'Most common skill gaps:\n' + rank(tally(col('Skill Gaps'), '|'), 12) + '\n\n' +
-    'Teams:\n' + rank(tally(3, ',')) + '\n\n' +
-    'Full data: ' + ss.getUrl();
-
-  MailApp.sendEmail({
-    to:      LD_EMAIL,
-    subject: 'BU AI Fluency — Weekly Digest (' + rows.length + ' new submissions)',
-    body:    body
-  });
+// Run this once to add the 20 dimAvg header columns to an existing sheet
+// without destroying existing data rows
+function addDimAvgHeaders() {
+  const props = PropertiesService.getScriptProperties();
+  const ssId = props.getProperty('RESULTS_SHEET_ID');
+  if (!ssId) { Logger.log('No sheet found.'); return; }
+  const sheet = SpreadsheetApp.openById(ssId).getSheetByName('Responses');
+  if (!sheet) { Logger.log('No Responses tab.'); return; }
+  const newHeaders = [
+    'R Pre-Pilot Avg', 'R Pilot Avg', 'R Builder Avg', 'R Multiplier Avg',
+    'A Pre-Pilot Avg', 'A Pilot Avg', 'A Builder Avg', 'A Multiplier Avg',
+    'N Pre-Pilot Avg', 'N Pilot Avg', 'N Builder Avg', 'N Multiplier Avg',
+    'G Pre-Pilot Avg', 'G Pilot Avg', 'G Builder Avg', 'G Multiplier Avg',
+    'E Pre-Pilot Avg', 'E Pilot Avg', 'E Builder Avg', 'E Multiplier Avg'
+  ];
+  const lastCol = sheet.getLastColumn();
+  sheet.getRange(1, lastCol + 1, 1, newHeaders.length).setValues([newHeaders]);
+  Logger.log('Headers added. New last column: ' + (lastCol + newHeaders.length));
 }

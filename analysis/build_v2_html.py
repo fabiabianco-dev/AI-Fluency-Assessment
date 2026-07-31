@@ -323,6 +323,16 @@ def main():
         "Answer for what you actually did over the last two weeks. Be honest "
         "with yourself — this is a development map, not a performance review.", 1)
 
+    # 1b-ii. Stale intake counts. v1 was 35 statements / 7 per dimension /
+    #        ~15 min; v2 is 15 questions / 3 per dimension. Generated from the
+    #        item bank so it can't drift again.
+    n_q = sum(len(v["questions"]) for v in bank.values())
+    per_dim = len(next(iter(bank.values()))["questions"])
+    html = html.replace(
+        "35 statements · 7 per RANGE dimension · no right answers · ~15 minutes",
+        f"{n_q} questions · {per_dim} per RANGE dimension · no right answers "
+        f"· about {max(3, round(n_q * 0.25))} minutes", 1)
+
     # 1c. Per-dimension "How to answer" guidance
     html = replace_span(html, "    function renderIntroCard(dimId) {",
                         r"^    \}$", INTRO_CARD_JS, "renderIntroCard")
