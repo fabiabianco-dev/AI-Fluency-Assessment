@@ -1,0 +1,16 @@
+# Response exports contain employee names, emails and individual assessment
+# results. Never commit these. Keep local copies only.
+*Responses*.xlsx
+*responses*.xlsx
+*Responses*.csv
+*responses*.csv
+data/
+
+# Scratch
+__pycache__/
+*.pyc
+.DS_Store
+
+# never commit clasp credentials
+.clasprc.json
+**/.clasprc.json

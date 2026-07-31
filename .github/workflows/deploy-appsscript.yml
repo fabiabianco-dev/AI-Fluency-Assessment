@@ -1,0 +1,104 @@
+name: Deploy to Apps Script
+
+# Merging to main pushes the built assessment to the Apps Script project and
+# creates a new web-app version, so the live URL serves the latest code.
+#
+# SECRETS — you add these yourself in GitHub. They are never committed, never
+# printed, and this workflow only ever references them by name:
+#   CLASPRC_JSON  contents of ~/.clasprc.json after `clasp login`
+#                 on your @betterup.co account
+#   SCRIPT_ID     the Apps Script project id (not a secret, but kept here so
+#                 the same workflow can target a test project)
+#
+# Settings → Secrets and variables → Actions → New repository secret
+#
+# ONE-TIME SETUP:
+#   1. Enable the Apps Script API: https://script.google.com/home/usersettings
+#   2. npm i -g @google/clasp && clasp login     (on your machine, @betterup.co)
+#   3. Copy ~/.clasprc.json into the CLASPRC_JSON secret
+#   4. Copy the Script ID from Apps Script → Project Settings into SCRIPT_ID
+#
+# The token grants write access to your Apps Script projects and Drive scope.
+# That is the minimum "merge deploys it" requires -- there is no read-only
+# variant that can push code. Worth a note to #team-infosec before creating it.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # lets you deploy manually from the Actions tab
+
+# Only one deploy at a time, and never cancel one midway.
+concurrency:
+  group: appsscript-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build the assessment from content/items-v2.json
+        run: python3 analysis/build_v2_html.py
+
+      - name: Stage files under the names Apps Script expects
+        run: |
+          # doGet() calls createTemplateFromFile('index'), so the HTML file
+          # must be named index.html or the page will not serve.
+          cp BU_AI_Fluency_v2.html      appsscript/index.html
+          cp BU_AI_Fluency_Backend_v2.gs appsscript/Code.gs
+          ls -la appsscript/
+
+      - name: Verify the built JavaScript parses
+        run: |
+          python3 - <<'PY' > /tmp/bundle.js
+          import re
+          html = open('appsscript/index.html').read()
+          print(re.search(r'<script>\n(.*?)\n  </script>', html, re.S).group(1))
+          PY
+          node --check /tmp/bundle.js
+          cp appsscript/Code.gs /tmp/Code.js && node --check /tmp/Code.js
+          echo "Both bundles parse."
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install clasp
+        run: npm install -g @google/clasp@2.4.2
+
+      - name: Authenticate
+        env:
+          CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
+        run: |
+          if [ -z "$CLASPRC_JSON" ]; then
+            echo "::error::CLASPRC_JSON secret is not set. See the header of this workflow."
+            exit 1
+          fi
+          # Written to the runner's home, which is discarded when the job ends.
+          printf '%s' "$CLASPRC_JSON" > ~/.clasprc.json
+          chmod 600 ~/.clasprc.json
+
+      - name: Point clasp at the project
+        env:
+          SCRIPT_ID: ${{ secrets.SCRIPT_ID }}
+        run: |
+          if [ -z "$SCRIPT_ID" ]; then
+            echo "::error::SCRIPT_ID secret is not set."
+            exit 1
+          fi
+          printf '{"scriptId":"%s","rootDir":"appsscript"}' "$SCRIPT_ID" > .clasp.json
+
+      - name: Push and deploy
+        run: |
+          clasp push --force
+          clasp deploy --description "${GITHUB_SHA::7} — ${GITHUB_REF_NAME}"
+          echo "Deployed. Confirm the live URL serves the new version."
+
+      - name: Remove credentials from the runner
+        if: always()
+        run: rm -f ~/.clasprc.json
