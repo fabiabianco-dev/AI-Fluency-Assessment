@@ -14,3 +14,7 @@ __pycache__/
 # never commit clasp credentials
 .clasprc.json
 **/.clasprc.json
+
+# Workday exports contain employee PII — never commit
+*Worker_Detail*
+*Current_Worker*

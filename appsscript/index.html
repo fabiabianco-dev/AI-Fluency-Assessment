@@ -1230,26 +1230,21 @@
           <div>
             <div class="font-mono" style="color:var(--text-muted);margin-bottom:6px;font-size:0.6rem;letter-spacing:0.15em;">WORK EMAIL</div>
             <input id="intakeEmail" type="email" placeholder="you@betterup.com" style="width:100%;background:transparent;border:1px solid var(--border-mid);color:var(--off-white);font-family:'Inter',sans-serif;font-size:0.9rem;padding:10px 14px;border-radius:6px;outline:none;transition:border-color var(--transition);" onfocus="this.style.borderColor='rgba(206,0,88,0.5)'" onblur="this.style.borderColor='rgba(244,243,233,0.15)'" />
-            <div style="margin-top:8px;font-size:0.75rem;color:var(--text-muted);line-height:1.5;">Your results will be sent to this address. We'll also invite you to retake in 3 months to track your growth.</div>
+            <div style="margin-top:8px;font-size:0.75rem;color:var(--text-muted);line-height:1.5;">Your results will be sent to this address.</div>
           </div>
           <div>
             <div class="font-mono" style="color:var(--text-muted);margin-bottom:6px;font-size:0.6rem;letter-spacing:0.15em;">YOUR TEAM</div>
             <select id="intakeFunction" onchange="onFunctionChange(this.value)" style="width:100%;background:var(--midnight-mid);border:1px solid var(--border-mid);color:var(--off-white);font-family:'Inter',sans-serif;font-size:0.9rem;padding:10px 14px;border-radius:6px;outline:none;cursor:pointer;transition:border-color var(--transition);" onfocus="this.style.borderColor='rgba(206,0,88,0.5)'" onblur="this.style.borderColor='rgba(244,243,233,0.15)'">
               <option value="" disabled selected style="color:var(--text-muted);">Select your team...</option>
-              <option value="software">Software &amp; Engineering</option>
-              <option value="marketing">Marketing</option>
-              <option value="finance">Finance</option>
-              <option value="hr">People &amp; Community</option>
-              <option value="data">Data &amp; Analytics</option>
-              <option value="sales">Sales</option>
-              <option value="cs">Customer Success</option>
-              <option value="product">Product</option>
-              <option value="legal">Legal</option>
-              <option value="leadership">Leadership / Executive</option>
-              <option value="other">Other</option>
+              <option value="Corporate & Operations">Corporate &amp; Operations</option>
+              <option value="Customer Support & Care">Customer Support &amp; Care</option>
+              <option value="Coaching Operations">Coaching Operations</option>
+              <option value="Revenue & Client Services">Revenue &amp; Client Services</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Product, Engineering & Labs">Product, Engineering &amp; Labs</option>
             </select>
             <div id="subFunctionRow" style="display:none;margin-top:10px;">
-              <div class="font-mono" style="color:var(--text-muted);margin-bottom:6px;font-size:0.6rem;letter-spacing:0.15em;">YOUR ROLE — choose the option most closely aligned to your work</div>
+              <div class="font-mono" style="color:var(--text-muted);margin-bottom:6px;font-size:0.6rem;letter-spacing:0.15em;">YOUR SUB-TEAM — the group you sit in</div>
               <select id="intakeSubFunction" onchange="userSubfunction=this.value" style="width:100%;background:var(--midnight-mid);border:1px solid var(--border-mid);color:var(--off-white);font-family:'Inter',sans-serif;font-size:0.9rem;padding:10px 14px;border-radius:6px;outline:none;cursor:pointer;transition:border-color var(--transition);" onfocus="this.style.borderColor='rgba(206,0,88,0.5)'" onblur="this.style.borderColor='rgba(244,243,233,0.15)'">
                 <option value="" disabled selected style="color:var(--text-muted);">Select your sub-team...</option>
               </select>
@@ -1875,70 +1870,318 @@
 
 
     const SUBFUNCTION_MAP = {
-      hr: [
-        { id: 'hr_ld',    label: 'Learning & Development' },
-        { id: 'hr_hrbp',  label: 'HRBP / People Partner' },
-        { id: 'hr_ta',    label: 'Talent Acquisition' },
-        { id: 'hr_comp',  label: 'Compensation, Benefits & HR Ops' }
+      "Corporate & Operations": [
+            {
+                  "id": "Accounting",
+                  "label": "Accounting"
+            },
+            {
+                  "id": "Corporate Development",
+                  "label": "Corporate Development"
+            },
+            {
+                  "id": "Data & Insights",
+                  "label": "Data & Insights"
+            },
+            {
+                  "id": "Facilities",
+                  "label": "Facilities"
+            },
+            {
+                  "id": "Finance",
+                  "label": "Finance"
+            },
+            {
+                  "id": "Financial Planning & Analysis",
+                  "label": "Financial Planning & Analysis"
+            },
+            {
+                  "id": "IT & Internal Systems",
+                  "label": "IT & Internal Systems"
+            },
+            {
+                  "id": "Information Security",
+                  "label": "Information Security"
+            },
+            {
+                  "id": "Legal",
+                  "label": "Legal"
+            },
+            {
+                  "id": "Office of the CEO",
+                  "label": "Office of the CEO"
+            },
+            {
+                  "id": "Operations Strategy",
+                  "label": "Operations Strategy"
+            },
+            {
+                  "id": "Order Operations",
+                  "label": "Order Operations"
+            },
+            {
+                  "id": "People",
+                  "label": "People"
+            },
+            {
+                  "id": "People & Community — HR",
+                  "label": "People & Community — HR"
+            },
+            {
+                  "id": "Talent Acquisition",
+                  "label": "Talent Acquisition"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
       ],
-      sales: [
-        { id: 'sales_ae',      label: 'Account Executive / Client Partner' },
-        { id: 'sales_sdr',     label: 'Sales Development / BDR' },
-        { id: 'sales_manager', label: 'Sales Manager / Revenue Leader' },
-        { id: 'sales_ops',     label: 'Sales Operations / RevOps' }
+      "Customer Support & Care": [
+            {
+                  "id": "Care Guides",
+                  "label": "Care Guides"
+            },
+            {
+                  "id": "Coach Academy",
+                  "label": "Coach Academy"
+            },
+            {
+                  "id": "Customer Support Operations",
+                  "label": "Customer Support Operations"
+            },
+            {
+                  "id": "Operations",
+                  "label": "Operations"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
       ],
-      cs: [
-        { id: 'cs_csm',     label: 'Customer Success Manager' },
-        { id: 'cs_cdd',     label: 'Coaching Delivery / Professional Coach' },
-        { id: 'cs_support', label: 'Customer Support / Service' }
+      "Coaching Operations": [
+            {
+                  "id": "Coach Development",
+                  "label": "Coach Development"
+            },
+            {
+                  "id": "Coach Operations",
+                  "label": "Coach Operations"
+            },
+            {
+                  "id": "Coach Platform R&D",
+                  "label": "Coach Platform R&D"
+            },
+            {
+                  "id": "Coach Quality & Success",
+                  "label": "Coach Quality & Success"
+            },
+            {
+                  "id": "Cost of Sales Operations",
+                  "label": "Cost of Sales Operations"
+            },
+            {
+                  "id": "Deployment",
+                  "label": "Deployment"
+            },
+            {
+                  "id": "Forward Deployed Engineers",
+                  "label": "Forward Deployed Engineers"
+            },
+            {
+                  "id": "Partner Operations",
+                  "label": "Partner Operations"
+            },
+            {
+                  "id": "Technical Implementation",
+                  "label": "Technical Implementation"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
       ],
-      software: [
-        { id: 'eng_swe',    label: 'Software Engineer' },
-        { id: 'eng_ml',     label: 'ML / AI Engineer' },
-        { id: 'eng_devops', label: 'DevOps / Platform / Security' }
+      "Revenue & Client Services": [
+            {
+                  "id": "Account Management",
+                  "label": "Account Management"
+            },
+            {
+                  "id": "Account Management Leadership",
+                  "label": "Account Management Leadership"
+            },
+            {
+                  "id": "Alliances",
+                  "label": "Alliances"
+            },
+            {
+                  "id": "Behavioral Science",
+                  "label": "Behavioral Science"
+            },
+            {
+                  "id": "CE&S",
+                  "label": "CE&S"
+            },
+            {
+                  "id": "Center of Excellence",
+                  "label": "Center of Excellence"
+            },
+            {
+                  "id": "Client Partnership",
+                  "label": "Client Partnership"
+            },
+            {
+                  "id": "Client Service Partners",
+                  "label": "Client Service Partners"
+            },
+            {
+                  "id": "Customer Success",
+                  "label": "Customer Success"
+            },
+            {
+                  "id": "Customer Success Managers",
+                  "label": "Customer Success Managers"
+            },
+            {
+                  "id": "Global Account Management Team",
+                  "label": "Global Account Management Team"
+            },
+            {
+                  "id": "Revenue Operations",
+                  "label": "Revenue Operations"
+            },
+            {
+                  "id": "Sales",
+                  "label": "Sales"
+            },
+            {
+                  "id": "Sales Account Executives",
+                  "label": "Sales Account Executives"
+            },
+            {
+                  "id": "Sales Leadership",
+                  "label": "Sales Leadership"
+            },
+            {
+                  "id": "Services",
+                  "label": "Services"
+            },
+            {
+                  "id": "Solutions Engineers",
+                  "label": "Solutions Engineers"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
       ],
-      data: [
-        { id: 'data_analyst',   label: 'Data / Business Analyst' },
-        { id: 'data_scientist', label: 'Data Scientist' },
-        { id: 'data_engineer',  label: 'Data Engineer' }
+      "Marketing": [
+            {
+                  "id": "Corporate Communication",
+                  "label": "Corporate Communication"
+            },
+            {
+                  "id": "Corporate Marketing",
+                  "label": "Corporate Marketing"
+            },
+            {
+                  "id": "Creative & Experiences",
+                  "label": "Creative & Experiences"
+            },
+            {
+                  "id": "Marketing",
+                  "label": "Marketing"
+            },
+            {
+                  "id": "Marketing Operations",
+                  "label": "Marketing Operations"
+            },
+            {
+                  "id": "Partnerships",
+                  "label": "Partnerships"
+            },
+            {
+                  "id": "Product Led Growth",
+                  "label": "Product Led Growth"
+            },
+            {
+                  "id": "Product Marketing",
+                  "label": "Product Marketing"
+            },
+            {
+                  "id": "Revenue Marketing",
+                  "label": "Revenue Marketing"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
       ],
-      marketing: [
-        { id: 'mkt_content', label: 'Content / Brand / Communications' },
-        { id: 'mkt_demand',  label: 'Demand Generation / Growth' },
-        { id: 'mkt_product', label: 'Product Marketing' }
-      ],
-      product: [
-        { id: 'prod_pm',     label: 'Product Manager' },
-        { id: 'prod_design', label: 'UX / Design' }
-      ],
-      finance: [
-        { id: 'fin_fp_a',       label: 'FP&A / Finance Business Partner' },
-        { id: 'fin_accounting', label: 'Accounting / Controllership' }
-      ],
-      leadership: [
-        { id: 'leader_director', label: 'Director / Senior Director' },
-        { id: 'leader_vp',       label: 'VP / SVP / C-Suite' }
-      ],
-      legal: [
-        { id: 'legal_counsel',    label: 'Legal Counsel / Attorney' },
-        { id: 'legal_compliance', label: 'Compliance / Risk' }
+      "Product, Engineering & Labs": [
+            {
+                  "id": "Designers",
+                  "label": "Designers"
+            },
+            {
+                  "id": "Engineering",
+                  "label": "Engineering"
+            },
+            {
+                  "id": "Engineering Group",
+                  "label": "Engineering Group"
+            },
+            {
+                  "id": "Experience Architecture",
+                  "label": "Experience Architecture"
+            },
+            {
+                  "id": "Experience Architecture Team",
+                  "label": "Experience Architecture Team"
+            },
+            {
+                  "id": "Generative AI",
+                  "label": "Generative AI"
+            },
+            {
+                  "id": "Labs",
+                  "label": "Labs"
+            },
+            {
+                  "id": "Product Management",
+                  "label": "Product Management"
+            },
+            {
+                  "id": "Product Management — Apps",
+                  "label": "Product Management — Apps"
+            },
+            {
+                  "id": "Product Management — Platform",
+                  "label": "Product Management — Platform"
+            },
+            {
+                  "id": "Program Management",
+                  "label": "Program Management"
+            },
+            {
+                  "id": "Research Scientists",
+                  "label": "Research Scientists"
+            },
+            {
+                  "id": "Research Services",
+                  "label": "Research Services"
+            },
+            {
+                  "id": "Studios",
+                  "label": "Studios"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
       ]
-    };
+};
 
-    const SUBFUNCTION_EXCLUSIONS = {
-      hr_ld:          ["talent-acquisition", "smarter-candidate-screening", "performance-management"],
-      hr_hrbp:        ["talent-acquisition", "compensation-benefits-and-payroll", "onboarding-automating"],
-      hr_ta:          ["learning-and-development", "onboarding-automating", "compensation-benefits"],
-      cs_csm:         ["call-centers", "customer-service-representatives", "genai-for-customer-support"],
-      cs_cdd:         ["call-centers", "customer-service-representatives", "genai-for-customer-support", "talent-acquisition"],
-      sales_ae:       ["sales-development-representatives", "inside-sales"],
-      sales_sdr:      ["sales-managers-data-driven", "sales-analytics"],
-      sales_ops:      ["inside-sales-crafting-effective-outreach", "sales-proposals-and-presentations"],
-      data_analyst:   ["deep-learning", "pytorch", "supervised-machine-learning", "generative-ai-with-llms"],
-      prod_pm:        ["generative-ai-elevate-software-development", "building-gen-ai-powered-applications", "build-rag-applications"],
-      leader_director:["role-of-the-ceo", "navigating-generative-ai-ceo-playbook"],
-      leader_vp:      ["genai-for-sales-development-representatives", "genai-for-inside-sales"]
-    };
+
+
 
     const SUBFUNCTION_BOOSTS = {
       hr_ld:           ["learning-and-development", "onboarding-automating", "genai-for-hr-professionals", "generative-ai-in-hr"],
@@ -2228,18 +2471,7 @@
       }
     }
 
-    function getSubfunctionBonus(course, fn, sfn) {
-      if (!course.fn || course.fn.length === 0) return 0.5;
-      if (!course.fn.includes(fn)) return -2;
-      let bonus = 1.5;
-      if (!sfn) return bonus;
-      const slug = course.u.split('/').pop();
-      const penalties = SUBFUNCTION_EXCLUSIONS[sfn] || [];
-      const boosts    = SUBFUNCTION_BOOSTS[sfn] || [];
-      if (penalties.some(p => slug.includes(p))) return -3;
-      if (boosts.some(b => slug.includes(b)))    bonus += 2.5;
-      return bonus;
-    }
+
 
     // ─── Utilities ───────────────────────────────────────────────────────────────
 
