@@ -59,18 +59,14 @@
     },
     {
       "function": "Revenue & Client Services",
-      "headcount": 149,
+      "headcount": 120,
       "subFunctions": [
         "Account Management",
         "Account Management Leadership",
         "Alliances",
-        "Behavioral Science",
-        "CE&S",
         "Center of Excellence",
-        "Client Partnership",
         "Client Service Partners",
         "Customer Success",
-        "Customer Success Managers",
         "Global Account Management Team",
         "Revenue Operations",
         "Sales",
@@ -103,9 +99,7 @@
       "subFunctions": [
         "Designers",
         "Engineering",
-        "Engineering Group",
         "Experience Architecture",
-        "Experience Architecture Team",
         "Generative AI",
         "Labs",
         "Product Management",
@@ -115,6 +109,15 @@
         "Research Scientists",
         "Research Services",
         "Studios",
+        "Other / Not listed"
+      ]
+    },
+    {
+      "function": "CE&S",
+      "headcount": 29,
+      "subFunctions": [
+        "CE&S",
+        "Client Partnership & Behavioral Science",
         "Other / Not listed"
       ]
     }
