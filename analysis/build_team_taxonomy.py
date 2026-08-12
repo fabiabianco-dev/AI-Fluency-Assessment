@@ -60,6 +60,34 @@ RELABEL = {
     "Product Managers - Apps": "Product Management — Apps",
 }
 
+# Cost-centre prefixes are a good default but not authoritative — Workday's
+# finance coding does not always match how the org actually describes itself.
+# These overrides win, keyed by cost-centre code, and are the place to record
+# corrections from the people who own each org.
+#
+#   code: (function, sub-function)
+#
+# Several codes can share a sub-function name to merge them into one option.
+OVERRIDES = {
+    # Fabia: "Behavioral Science sits under Client Partnership & Behavioral
+    # Science, under CE&S." Merges 40180 and 40195 into one sub-team.
+    "40180": ("CE&S", "Client Partnership & Behavioral Science"),
+    "40195": ("CE&S", "Client Partnership & Behavioral Science"),
+    "40165": ("CE&S", "CE&S"),
+
+    # Fabia: "Customer Success is enough" — 40140 and 40145 were showing as two
+    # near-identical options.
+    "40140": ("Revenue & Client Services", "Customer Success"),
+    "40145": ("Revenue & Client Services", "Customer Success"),
+
+    # Same defect: an "X Admin" cost centre alongside the team's own, which read
+    # as two teams. Collapsed into one option each.
+    "60100": ("Product, Engineering & Labs", "Engineering"),
+    "60110": ("Product, Engineering & Labs", "Engineering"),
+    "60600": ("Product, Engineering & Labs", "Experience Architecture"),
+    "60610": ("Product, Engineering & Labs", "Experience Architecture"),
+}
+
 # Every function gets this, so nobody is ever stuck.
 CATCH_ALL = "Other / Not listed"
 
@@ -119,21 +147,35 @@ def main(src, dest):
 
     tree = collections.defaultdict(collections.Counter)
     unmapped = collections.Counter()
+    overridden = 0
     for r in active:
         cc = r[COL_COST_CENTER]
-        prefix = cc.split()[0][:2]
-        fn = FUNCTIONS.get(prefix)
+        code = cc.split()[0]
+        if code in OVERRIDES:
+            fn, sub = OVERRIDES[code]
+            overridden += 1
+        else:
+            fn = FUNCTIONS.get(code[:2])
+            sub = clean(cc)
         if not fn:
             unmapped[cc] += 1
             continue
-        tree[fn][clean(cc)] += 1
+        tree[fn][sub] += 1
 
     if unmapped:
-        sys.exit("FAIL: cost centres with unrecognised prefix:\n  " +
+        sys.exit("FAIL: cost centres with unrecognised prefix and no override:\n  " +
                  "\n  ".join(f"{v}x {k}" for k, v in unmapped.items()))
 
+    # Override targets must be real, or a correction silently does nothing.
+    declared = {f for f, _ in OVERRIDES.values()}
+    for fn in declared:
+        if fn not in tree:
+            sys.exit(f"FAIL: override targets function '{fn}' but no active worker "
+                     "landed there — check the cost-centre codes.")
+
+    order = list(FUNCTIONS.values()) + sorted(declared - set(FUNCTIONS.values()))
     functions = []
-    for fn in FUNCTIONS.values():
+    for fn in order:
         subs = sorted(tree[fn])
         if not subs:
             continue
@@ -158,6 +200,7 @@ def main(src, dest):
         json.dump(out, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
+    print(f"Overrides applied to {overridden} workers")
     print(f"Active workers: {len(active)}  "
           f"({', '.join(f'{v} {k.lower()}' for k, v in out['_byWorkerType'].items())})")
     print(f"Coverage: 100% — every active worker maps to a function\n")
