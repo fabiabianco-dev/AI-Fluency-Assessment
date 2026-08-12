@@ -1,0 +1,122 @@
+{
+  "_doc": "Two-level team dropdown, derived from the Workday worker report by analysis/build_team_taxonomy.py. Function = cost-centre prefix, sub-function = cost-centre name. Active workers only; employees and contingent workers both included. Regenerate when the roster changes.",
+  "_source": "e87d47a0-BetterUp_Current_Worker_Detail_Report__Limited_20260810_09_01_PDT.xlsx",
+  "_activeWorkers": 610,
+  "_byWorkerType": {
+    "Employee": 468,
+    "Contingent Worker": 142
+  },
+  "catchAll": "Other / Not listed",
+  "functions": [
+    {
+      "function": "Corporate & Operations",
+      "headcount": 125,
+      "subFunctions": [
+        "Accounting",
+        "Corporate Development",
+        "Data & Insights",
+        "Facilities",
+        "Finance",
+        "Financial Planning & Analysis",
+        "IT & Internal Systems",
+        "Information Security",
+        "Legal",
+        "Office of the CEO",
+        "Operations Strategy",
+        "Order Operations",
+        "People",
+        "People & Community — HR",
+        "Talent Acquisition",
+        "Other / Not listed"
+      ]
+    },
+    {
+      "function": "Customer Support & Care",
+      "headcount": 54,
+      "subFunctions": [
+        "Care Guides",
+        "Coach Academy",
+        "Customer Support Operations",
+        "Operations",
+        "Other / Not listed"
+      ]
+    },
+    {
+      "function": "Coaching Operations",
+      "headcount": 76,
+      "subFunctions": [
+        "Coach Development",
+        "Coach Operations",
+        "Coach Platform R&D",
+        "Coach Quality & Success",
+        "Cost of Sales Operations",
+        "Deployment",
+        "Forward Deployed Engineers",
+        "Partner Operations",
+        "Technical Implementation",
+        "Other / Not listed"
+      ]
+    },
+    {
+      "function": "Revenue & Client Services",
+      "headcount": 149,
+      "subFunctions": [
+        "Account Management",
+        "Account Management Leadership",
+        "Alliances",
+        "Behavioral Science",
+        "CE&S",
+        "Center of Excellence",
+        "Client Partnership",
+        "Client Service Partners",
+        "Customer Success",
+        "Customer Success Managers",
+        "Global Account Management Team",
+        "Revenue Operations",
+        "Sales",
+        "Sales Account Executives",
+        "Sales Leadership",
+        "Services",
+        "Solutions Engineers",
+        "Other / Not listed"
+      ]
+    },
+    {
+      "function": "Marketing",
+      "headcount": 52,
+      "subFunctions": [
+        "Corporate Communication",
+        "Corporate Marketing",
+        "Creative & Experiences",
+        "Marketing",
+        "Marketing Operations",
+        "Partnerships",
+        "Product Led Growth",
+        "Product Marketing",
+        "Revenue Marketing",
+        "Other / Not listed"
+      ]
+    },
+    {
+      "function": "Product, Engineering & Labs",
+      "headcount": 154,
+      "subFunctions": [
+        "Designers",
+        "Engineering",
+        "Engineering Group",
+        "Experience Architecture",
+        "Experience Architecture Team",
+        "Generative AI",
+        "Labs",
+        "Product Management",
+        "Product Management — Apps",
+        "Product Management — Platform",
+        "Program Management",
+        "Research Scientists",
+        "Research Services",
+        "Studios",
+        "Other / Not listed"
+      ]
+    }
+  ]
+}

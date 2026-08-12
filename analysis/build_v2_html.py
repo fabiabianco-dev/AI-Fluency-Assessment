@@ -333,6 +333,49 @@ def main():
         f"{n_q} questions · {per_dim} per RANGE dimension · no right answers "
         f"· about {max(3, round(n_q * 0.25))} minutes", 1)
 
+    # 1b-iii. Team dropdown, generated from the live roster.
+    #         The old list was hardcoded and stale, so learners whose team wasn't
+    #         on it had nowhere to put themselves. Now derived from Workday via
+    #         analysis/build_team_taxonomy.py, verified at 100% coverage of active
+    #         workers. Every function also carries "Other / Not listed".
+    teams = json.loads((ROOT / "content" / "teams.json").read_text())
+
+    fn_options = ('              <option value="" disabled selected '
+                  'style="color:var(--text-muted);">Select your team...</option>\n')
+    fn_options += "\n".join(
+        f'              <option value="{f["function"]}">'
+        f'{f["function"].replace("&", "&amp;")}</option>'
+        for f in teams["functions"])
+    html = replace_span(html,
+                        '              <option value="" disabled selected '
+                        'style="color:var(--text-muted);">Select your team...</option>',
+                        r'^              <option value="other">Other</option>$',
+                        fn_options, "team options")
+
+    sub_map = {f["function"]: [{"id": s, "label": s} for s in f["subFunctions"]]
+               for f in teams["functions"]}
+    html = replace_span(html, "    const SUBFUNCTION_MAP = {", r"^    \};$",
+                        "    const SUBFUNCTION_MAP = "
+                        + json.dumps(sub_map, indent=6, ensure_ascii=False) + ";\n",
+                        "SUBFUNCTION_MAP")
+
+    html = html.replace(
+        "YOUR ROLE — choose the option most closely aligned to your work",
+        "YOUR SUB-TEAM — the group you sit in", 1)
+
+    # Dead course-engine leftovers: getSubfunctionBonus is never called, and
+    # SUBFUNCTION_EXCLUSIONS existed only to serve it.
+    html = replace_span(html, "    function getSubfunctionBonus(course, fn, sfn) {",
+                        r"^    \}$", "", "getSubfunctionBonus")
+    html = replace_span(html, "    const SUBFUNCTION_EXCLUSIONS = {", r"^    \};$",
+                        "", "SUBFUNCTION_EXCLUSIONS")
+
+    # Stale promise: the retake was removed, so this cannot be honoured.
+    html = html.replace(
+        "Your results will be sent to this address. We'll also invite you to "
+        "retake in 3 months to track your growth.",
+        "Your results will be sent to this address.", 1)
+
     # 1c. Per-dimension "How to answer" guidance
     html = replace_span(html, "    function renderIntroCard(dimId) {",
                         r"^    \}$", INTRO_CARD_JS, "renderIntroCard")
