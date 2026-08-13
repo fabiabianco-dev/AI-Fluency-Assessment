@@ -3,6 +3,22 @@
   "_source": "89859420-Report_for_Fabia_.xlsx",
   "_workers": 610,
   "_minSubTeamSize": 3,
+  "_foldedIntoCatchAll": {
+    "CIO Office": 1,
+    "Channel Partnerships": 1,
+    "Corporate FP&A": 2,
+    "Direct-to-Consumer": 1,
+    "Human Resources — Europe": 1,
+    "Internal Communications": 1,
+    "Legal — Commercial": 2,
+    "Marketing — EMEA": 1,
+    "PR & Content": 2,
+    "Partnerships, Advisors & Community": 2,
+    "Product Management": 2,
+    "R&D Product Operations": 1,
+    "Research Scientists": 2,
+    "Sales": 2
+  },
   "catchAll": "Other / Not listed",
   "functions": [
     {
@@ -11,7 +27,6 @@
       "subFunctions": [
         "Account Management",
         "Account Management — Enterprise AM, EMEA",
-        "Channel Partnerships",
         "Customer Experience & Services",
         "Customer Experience & Services — CDD and Change Mgmt",
         "Customer Experience & Services — Client Partnership, Behavioral Sciences and PIC",
@@ -21,7 +36,6 @@
         "Global Accounts",
         "Government",
         "Government — Government Customer Success",
-        "Sales",
         "Sales — Account Partners",
         "Sales — Enterprise Sales",
         "Other / Not listed"
@@ -31,7 +45,6 @@
       "function": "Operations (COO org)",
       "headcount": 114,
       "subFunctions": [
-        "CIO Office",
         "Center for Daring Leadership",
         "GTM Operations",
         "IT & Security",
@@ -50,7 +63,6 @@
         "Engineering",
         "Engineering — no sub-team",
         "Platform Engineering",
-        "R&D Product Operations",
         "Other / Not listed"
       ]
     },
@@ -59,8 +71,6 @@
       "headcount": 43,
       "subFunctions": [
         "Human Resources",
-        "Internal Communications",
-        "Partnerships, Advisors & Community",
         "People & Community — no sub-team",
         "Talent Acquisition",
         "Talent Acquisition — GTM Recruiting",
@@ -74,9 +84,7 @@
       "headcount": 36,
       "subFunctions": [
         "Creative Marketing",
-        "Marketing — EMEA",
         "Marketing — no sub-team",
-        "PR & Content",
         "Product Marketing",
         "Revenue Marketing",
         "Other / Not listed"
@@ -94,7 +102,6 @@
         "Accounting",
         "Accounting — Accountants",
         "Accounting — Revenue Accounting",
-        "Corporate FP&A",
         "Finance — no sub-team",
         "Other / Not listed"
       ]
@@ -104,7 +111,6 @@
       "headcount": 15,
       "subFunctions": [
         "Legal — AI, Product, Privacy & Security",
-        "Legal — Commercial",
         "Legal — no sub-team",
         "Other / Not listed"
       ]
@@ -119,7 +125,6 @@
       "headcount": 14,
       "subFunctions": [
         "Learning Experience Design",
-        "Product Management",
         "Product — no sub-team",
         "Other / Not listed"
       ]
@@ -128,7 +133,6 @@
       "function": "Product Marketing",
       "headcount": 9,
       "subFunctions": [
-        "Direct-to-Consumer",
         "Direct-to-Consumer — Member Growth Marketing",
         "Product Marketing — no sub-team",
         "Other / Not listed"
@@ -147,20 +151,12 @@
     {
       "function": "Business Operations & Strategy",
       "headcount": 7,
-      "subFunctions": [
-        "Business Operations & Strategy — no sub-team",
-        "Human Resources — Europe",
-        "Other / Not listed"
-      ]
+      "subFunctions": []
     },
     {
       "function": "Strategy & Growth",
       "headcount": 3,
-      "subFunctions": [
-        "Research Scientists",
-        "Strategy & Growth — no sub-team",
-        "Other / Not listed"
-      ]
+      "subFunctions": []
     },
     {
       "function": "AI Platform",

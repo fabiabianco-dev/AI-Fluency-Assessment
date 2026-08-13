@@ -40,12 +40,12 @@ HDR_ID = "ID"
 # Sub-team label for someone who sits directly in the main team with no Level 4.
 DIRECT = "{team} — no sub-team"
 
-# Level 5 is where several real teams live (e.g. "Client Partnership, Behavioral
-# Sciences and PIC" under Customer Experience & Services), so it is used when it
-# adds information. But a sub-team of one or two people, sitting next to an
-# individual's results, is effectively an identifier -- so Level 5 only splits out
-# once the group reaches this size. Smaller groups roll up to their Level 4.
-MIN_L5_GROUP = 3
+# Smallest group that may appear as its own sub-team option. A sub-team of one or
+# two people, printed beside an individual's results, is effectively an identifier
+# -- someone reading the tracker could work out who it is without a name. Anything
+# below this becomes CATCH_ALL. Applies to every sub-team, at Level 4 and Level 5
+# alike (Fabia: "if the sub-team is smaller than three, just have them as other").
+MIN_SUB_TEAM = 3
 
 # Always offered, at both levels, so nobody is ever stuck.
 CATCH_ALL = "Other / Not listed"
@@ -153,7 +153,7 @@ def main(src, dest):
             l4, l5 = r.get(c_l4), r.get(c_l5)
             if l4 and l5 and not l5_adds_nothing(l4, l5):
                 l5_sizes[(l4, l5)] += 1
-    l5_ok = {pair for pair, n in l5_sizes.items() if n >= MIN_L5_GROUP}
+    l5_ok = {pair for pair, n in l5_sizes.items() if n >= MIN_SUB_TEAM}
     rolled_up = sum(n for pair, n in l5_sizes.items() if pair not in l5_ok)
 
     tree = collections.defaultdict(collections.Counter)
@@ -183,6 +183,17 @@ def main(src, dest):
     if placed != len(workers):
         sys.exit(f"FAIL: {len(workers) - placed} workers did not land in a team")
 
+    # Fold every sub-team below the floor into the catch-all. Applied here, after
+    # the whole tree is counted, so it covers Level 4 options as well as Level 5
+    # splits -- 11 Level 4 orgs had only one or two people.
+    folded = collections.Counter()
+    for team, subs in tree.items():
+        small = [s for s, n in subs.items()
+                 if n < MIN_SUB_TEAM and s != DIRECT.format(team=team)]
+        for s in small:
+            folded[s] = subs.pop(s)
+            subs[CATCH_ALL] += folded[s]
+
     # Largest teams first — most learners find themselves without scrolling.
     order = sorted(tree, key=lambda t: (t == CATCH_ALL, -sum(tree[t].values())))
 
@@ -193,7 +204,10 @@ def main(src, dest):
         # choose, so emit no sub-teams at all and the second dropdown stays
         # hidden. Asking someone to pick "Other / Not listed" from a list of one
         # is a question with no information in it.
-        if subs == [DIRECT.format(team=team)] or subs == [CATCH_ALL]:
+        # The fold above may already have put CATCH_ALL in the tree; keep exactly
+        # one, pinned last.
+        subs = [s for s in subs if s != CATCH_ALL]
+        if subs == [DIRECT.format(team=team)] or not subs:
             subs = []
         functions.append({
             "function": team,
@@ -212,7 +226,8 @@ def main(src, dest):
                  "sub-team = Level 4. Regenerate when the org changes."),
         "_source": src.split("/")[-1],
         "_workers": len(workers),
-        "_minSubTeamSize": MIN_L5_GROUP,
+        "_minSubTeamSize": MIN_SUB_TEAM,
+        "_foldedIntoCatchAll": {k: v for k, v in sorted(folded.items())},
         "catchAll": CATCH_ALL,
         "functions": functions,
     }
@@ -224,8 +239,10 @@ def main(src, dest):
           f"sub-team options: {sum(len(f['subFunctions']) for f in functions)}")
     if unplaced:
         print(f"  {unplaced} with no Level 2 or 3 org -> {CATCH_ALL}")
-    print(f"  Level 5 split out where the group reaches {MIN_L5_GROUP}; "
-          f"{rolled_up} people in smaller Level 5 orgs rolled up to Level 4")
+    print(f"  Sub-teams below {MIN_SUB_TEAM} people folded into '{CATCH_ALL}': "
+          f"{len(folded)} orgs, {sum(folded.values())} people")
+    for s_, n in sorted(folded.items(), key=lambda kv: -kv[1]):
+        print(f"      {n}  {s_}")
     print("Coverage: 100% — every worker lands in a main team\n")
     for f in functions:
         print(f"{f['function']}  ({f['headcount']})")
