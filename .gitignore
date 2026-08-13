@@ -18,3 +18,4 @@ __pycache__/
 # Workday exports contain employee PII — never commit
 *Worker_Detail*
 *Current_Worker*
+*Report_for_Fabia*

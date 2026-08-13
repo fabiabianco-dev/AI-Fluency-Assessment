@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
-"""Derive the two-level team dropdown from a Workday worker report.
+"""Derive the two-level team dropdown from a Workday supervisory-org report.
 
 Learners were complaining their team wasn't in the dropdown, because the list was
-hardcoded from a stale guess. This builds it from the actual roster instead.
+hardcoded from a guess. This builds it from the actual org tree instead.
 
-Function comes from the cost-centre prefix (10xxx, 20xxx …), sub-function from the
-cost-centre name with the numeric code stripped. Coverage is asserted at 100% --
-if any active worker lacks a cost centre the build fails rather than silently
-producing a list someone is missing from.
+  main team  = Level 3 Supervisory Org   (falls back to Level 2 when blank)
+  sub-team   = Level 4 Supervisory Org   (blank means the person sits directly
+                                          in the main team)
 
-PRIVACY: the input contains names, work emails, managers and employment status.
-Nothing per-person is read into the output -- only cost-centre labels and counts.
-Do not commit the source report.
+Columns are located by header name, not position, so a re-run of the Workday
+report with different column ordering still works.
+
+Coverage is asserted: every worker must land in some main team, or the build fails
+rather than silently emitting a list someone is missing from.
+
+PRIVACY: the input contains names, work emails, managers and HRBP assignments.
+Nothing per-person is read into the output -- only org names and counts. Do not
+commit the source report.
 
 Usage:
-    python3 analysis/build_team_taxonomy.py <worker_report.xlsx> content/teams.json
+    python3 analysis/build_team_taxonomy.py <report.xlsx> content/teams.json
 """
 
 import collections
@@ -25,71 +30,40 @@ from xml.etree import ElementTree as ET
 
 NS = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 
-COL_ACTIVE = 4       # "Active Status" — 'Yes' for current workers
-COL_WORKER_TYPE = 3  # Employee | Contingent Worker (both included, per Fabia)
-COL_COST_CENTER = 12
+HDR_L2 = "Level 2 Supervisory Org"
+HDR_L3 = "Level 3 Supervisory Org"
+HDR_L4 = "Level 4 Supervisory Org"
+HDR_ID = "ID"
 
-# Cost-centre prefix -> learner-facing function name.
-FUNCTIONS = {
-    "10": "Corporate & Operations",
-    "20": "Customer Support & Care",
-    "30": "Coaching Operations",
-    "40": "Revenue & Client Services",
-    "50": "Marketing",
-    "60": "Product, Engineering & Labs",
-}
+# Sub-team label for someone who sits directly in the main team with no Level 4.
+DIRECT = "{team} — no sub-team"
 
-# Cost-centre names carry internal shorthand. Rewrite the ones a learner would
-# not recognise as their own team.
-RELABEL = {
-    "Office of CEO": "Office of the CEO",
-    "People Admin": "People & Community",
-    "Human Resources": "People & Community — HR",
-    "Recruiting": "Talent Acquisition",
-    "Data and Insights": "Data & Insights",
-    "IT": "IT & Internal Systems",
-    "FP&A": "Financial Planning & Analysis",
-    "Corp Development": "Corporate Development",
-    "Gen AI": "Generative AI",
-    "Operations Strategy Executive": "Operations Strategy",
-    "Cost of Sales - Operations": "Cost of Sales Operations",
-    "CE&S Admin": "CE&S",
-    "Sales AM Management": "Account Management Leadership",
-    "Sales AE Management": "Sales Leadership",
-    "Product Managers - Platform": "Product Management — Platform",
-    "Product Managers - Apps": "Product Management — Apps",
-}
-
-# Cost-centre prefixes are a good default but not authoritative — Workday's
-# finance coding does not always match how the org actually describes itself.
-# These overrides win, keyed by cost-centre code, and are the place to record
-# corrections from the people who own each org.
-#
-#   code: (function, sub-function)
-#
-# Several codes can share a sub-function name to merge them into one option.
-OVERRIDES = {
-    # Fabia: "Behavioral Science sits under Client Partnership & Behavioral
-    # Science, under CE&S." Merges 40180 and 40195 into one sub-team.
-    "40180": ("CE&S", "Client Partnership & Behavioral Science"),
-    "40195": ("CE&S", "Client Partnership & Behavioral Science"),
-    "40165": ("CE&S", "CE&S"),
-
-    # Fabia: "Customer Success is enough" — 40140 and 40145 were showing as two
-    # near-identical options.
-    "40140": ("Revenue & Client Services", "Customer Success"),
-    "40145": ("Revenue & Client Services", "Customer Success"),
-
-    # Same defect: an "X Admin" cost centre alongside the team's own, which read
-    # as two teams. Collapsed into one option each.
-    "60100": ("Product, Engineering & Labs", "Engineering"),
-    "60110": ("Product, Engineering & Labs", "Engineering"),
-    "60600": ("Product, Engineering & Labs", "Experience Architecture"),
-    "60610": ("Product, Engineering & Labs", "Experience Architecture"),
-}
-
-# Every function gets this, so nobody is ever stuck.
+# Always offered, at both levels, so nobody is ever stuck.
 CATCH_ALL = "Other / Not listed"
+
+# Org names that read as internal shorthand. Keyed on the Workday value.
+RELABEL = {
+    "COO Direct": "Operations (COO org)",
+    "CEO Direct": "Office of the CEO",
+    "LAPPS": "Legal AI, Product, Privacy & Security",
+    "Legal AI, Product, Privacy, Security (LAPPS)":
+        "Legal — AI, Product, Privacy & Security",
+    "Legal, Commercial": "Legal — Commercial",
+    "D2C": "Direct-to-Consumer",
+    "CIO Org": "CIO Office",
+    "Human Resources, Europe": "Human Resources — Europe",
+    "Marketing EMEA": "Marketing — EMEA",
+    "Studios, Interactive": "Studios (Interactive)",
+    "Center for Daring Leadership": "Center for Daring Leadership",
+    "Partnerships, Advisors, & Community": "Partnerships, Advisors & Community",
+    "Information Technology & Security": "IT & Security",
+    "R&D Product Operations": "R&D Product Operations",
+}
+
+# Corrections that outrank the org tree, keyed on the Workday Level 3 value.
+# This is where to record "team X actually sits under Y" from the people who own
+# each org. Empty is fine — the org tree is usually right.
+FUNCTION_OVERRIDES = {}
 
 
 def read_rows(path):
@@ -112,8 +86,9 @@ def read_rows(path):
             return ""
         return shared[int(v.text)] if c.get("t") == "s" else v.text
 
+    sheet = next(n for n in z.namelist() if n.startswith("xl/worksheets/sheet"))
     rows = []
-    for r in ET.fromstring(z.read("xl/worksheets/sheet1.xml")).iter(NS + "row"):
+    for r in ET.fromstring(z.read(sheet)).iter(NS + "row"):
         row = {}
         for c in r.iter(NS + "c"):
             val = value(c).strip()
@@ -123,76 +98,75 @@ def read_rows(path):
     return rows
 
 
-def clean(cost_center):
-    """'40145 Customer Success Managers' -> 'Customer Success Managers'."""
-    parts = cost_center.split(None, 1)
-    name = parts[1] if len(parts) > 1 and parts[0].isdigit() else cost_center
-    name = name.replace(" Admin", "").strip() or name.strip()
+def label(name):
     return RELABEL.get(name, name)
 
 
 def main(src, dest):
     rows = read_rows(src)
-    header_at = next(i for i, r in enumerate(rows) if r.get(0) == "Preferred Name")
-    data = [r for r in rows[header_at + 1:] if r.get(0)]
 
-    active = [r for r in data if r.get(COL_ACTIVE) == "Yes"]
-    if not active:
-        sys.exit("FAIL: no rows with Active Status = 'Yes'")
+    header_at, header = next(
+        (i, r) for i, r in enumerate(rows) if HDR_ID in r.values()
+    )
+    cols = {v: k for k, v in header.items()}
+    for h in (HDR_L2, HDR_L3, HDR_L4):
+        if h not in cols:
+            sys.exit(f"FAIL: column '{h}' not found. Headers present:\n  "
+                     + "\n  ".join(sorted(header.values())))
+    c_l2, c_l3, c_l4 = cols[HDR_L2], cols[HDR_L3], cols[HDR_L4]
+    c_id = cols[HDR_ID]
 
-    missing = [r for r in active if not r.get(COL_COST_CENTER)]
-    if missing:
-        sys.exit(f"FAIL: {len(missing)} active workers have no cost centre — "
-                 "the dropdown would be missing them. Fix the report first.")
+    workers = [r for r in rows[header_at + 1:] if r.get(c_id)]
+    if not workers:
+        sys.exit("FAIL: no worker rows found")
 
     tree = collections.defaultdict(collections.Counter)
-    unmapped = collections.Counter()
-    overridden = 0
-    for r in active:
-        cc = r[COL_COST_CENTER]
-        code = cc.split()[0]
-        if code in OVERRIDES:
-            fn, sub = OVERRIDES[code]
-            overridden += 1
+    unplaced = 0
+    for r in workers:
+        # Level 3 is the main team; people who report above it fall back to
+        # Level 2 (in practice, CEO Direct).
+        raw_team = r.get(c_l3) or r.get(c_l2)
+        if not raw_team:
+            unplaced += 1
+            team = CATCH_ALL
         else:
-            fn = FUNCTIONS.get(code[:2])
-            sub = clean(cc)
-        if not fn:
-            unmapped[cc] += 1
-            continue
-        tree[fn][sub] += 1
+            team = label(FUNCTION_OVERRIDES.get(raw_team, raw_team))
+        sub = label(r[c_l4]) if r.get(c_l4) else DIRECT.format(team=team)
+        tree[team][sub] += 1
 
-    if unmapped:
-        sys.exit("FAIL: cost centres with unrecognised prefix and no override:\n  " +
-                 "\n  ".join(f"{v}x {k}" for k, v in unmapped.items()))
+    placed = sum(sum(v.values()) for v in tree.values())
+    if placed != len(workers):
+        sys.exit(f"FAIL: {len(workers) - placed} workers did not land in a team")
 
-    # Override targets must be real, or a correction silently does nothing.
-    declared = {f for f, _ in OVERRIDES.values()}
-    for fn in declared:
-        if fn not in tree:
-            sys.exit(f"FAIL: override targets function '{fn}' but no active worker "
-                     "landed there — check the cost-centre codes.")
+    # Largest teams first — most learners find themselves without scrolling.
+    order = sorted(tree, key=lambda t: (t == CATCH_ALL, -sum(tree[t].values())))
 
-    order = list(FUNCTIONS.values()) + sorted(declared - set(FUNCTIONS.values()))
     functions = []
-    for fn in order:
-        subs = sorted(tree[fn])
-        if not subs:
-            continue
+    for team in order:
+        subs = sorted(tree[team])
+        # Where everyone sits directly in the main team there is nothing to
+        # choose, so emit no sub-teams at all and the second dropdown stays
+        # hidden. Asking someone to pick "Other / Not listed" from a list of one
+        # is a question with no information in it.
+        if subs == [DIRECT.format(team=team)] or subs == [CATCH_ALL]:
+            subs = []
         functions.append({
-            "function": fn,
-            "headcount": sum(tree[fn].values()),
-            "subFunctions": subs + [CATCH_ALL],
+            "function": team,
+            "headcount": sum(tree[team].values()),
+            "subFunctions": (subs + [CATCH_ALL]) if subs else [],
         })
 
+    if not any(f["function"] == CATCH_ALL for f in functions):
+        functions.append({"function": CATCH_ALL, "headcount": 0,
+                          "subFunctions": []})
+
     out = {
-        "_doc": ("Two-level team dropdown, derived from the Workday worker report by "
-                 "analysis/build_team_taxonomy.py. Function = cost-centre prefix, "
-                 "sub-function = cost-centre name. Active workers only; employees and "
-                 "contingent workers both included. Regenerate when the roster changes."),
+        "_doc": ("Two-level team dropdown, generated by "
+                 "analysis/build_team_taxonomy.py from a Workday supervisory-org "
+                 "report. Main team = Level 3 Supervisory Org (Level 2 when blank); "
+                 "sub-team = Level 4. Regenerate when the org changes."),
         "_source": src.split("/")[-1],
-        "_activeWorkers": len(active),
-        "_byWorkerType": dict(collections.Counter(r.get(COL_WORKER_TYPE, "?") for r in active)),
+        "_workers": len(workers),
         "catchAll": CATCH_ALL,
         "functions": functions,
     }
@@ -200,19 +174,18 @@ def main(src, dest):
         json.dump(out, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
-    print(f"Overrides applied to {overridden} workers")
-    print(f"Active workers: {len(active)}  "
-          f"({', '.join(f'{v} {k.lower()}' for k, v in out['_byWorkerType'].items())})")
-    print(f"Coverage: 100% — every active worker maps to a function\n")
-    for fn in functions:
-        print(f"{fn['function']}  ({fn['headcount']})")
-        for s in fn["subFunctions"]:
-            n = tree[fn["function"]][s]
+    print(f"Workers: {len(workers)}   main teams: {len(functions)}   "
+          f"sub-team options: {sum(len(f['subFunctions']) for f in functions)}")
+    if unplaced:
+        print(f"  {unplaced} with no Level 2 or 3 org -> {CATCH_ALL}")
+    print("Coverage: 100% — every worker lands in a main team\n")
+    for f in functions:
+        print(f"{f['function']}  ({f['headcount']})")
+        for s in f["subFunctions"]:
+            n = tree[f["function"]].get(s, 0)
             print(f"    {s}" + (f"  [{n}]" if n else "  [catch-all]"))
         print()
     print(f"Wrote {dest}")
-    print(f"{len(functions)} functions, "
-          f"{sum(len(f['subFunctions']) for f in functions)} sub-function options")
 
 
 if __name__ == "__main__":

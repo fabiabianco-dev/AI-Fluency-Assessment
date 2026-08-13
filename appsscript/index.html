@@ -1236,13 +1236,23 @@
             <div class="font-mono" style="color:var(--text-muted);margin-bottom:6px;font-size:0.6rem;letter-spacing:0.15em;">YOUR TEAM</div>
             <select id="intakeFunction" onchange="onFunctionChange(this.value)" style="width:100%;background:var(--midnight-mid);border:1px solid var(--border-mid);color:var(--off-white);font-family:'Inter',sans-serif;font-size:0.9rem;padding:10px 14px;border-radius:6px;outline:none;cursor:pointer;transition:border-color var(--transition);" onfocus="this.style.borderColor='rgba(206,0,88,0.5)'" onblur="this.style.borderColor='rgba(244,243,233,0.15)'">
               <option value="" disabled selected style="color:var(--text-muted);">Select your team...</option>
-              <option value="Corporate & Operations">Corporate &amp; Operations</option>
-              <option value="Customer Support & Care">Customer Support &amp; Care</option>
-              <option value="Coaching Operations">Coaching Operations</option>
-              <option value="Revenue & Client Services">Revenue &amp; Client Services</option>
+              <option value="Field Operations">Field Operations</option>
+              <option value="Operations (COO org)">Operations (COO org)</option>
+              <option value="Engineering">Engineering</option>
+              <option value="People & Community">People &amp; Community</option>
               <option value="Marketing">Marketing</option>
-              <option value="Product, Engineering & Labs">Product, Engineering &amp; Labs</option>
-              <option value="CE&S">CE&amp;S</option>
+              <option value="Office of the CEO">Office of the CEO</option>
+              <option value="Finance">Finance</option>
+              <option value="Legal">Legal</option>
+              <option value="Labs">Labs</option>
+              <option value="Product">Product</option>
+              <option value="Product Marketing">Product Marketing</option>
+              <option value="Product Design">Product Design</option>
+              <option value="Studios (Interactive)">Studios (Interactive)</option>
+              <option value="Business Operations & Strategy">Business Operations &amp; Strategy</option>
+              <option value="Strategy & Growth">Strategy &amp; Growth</option>
+              <option value="AI Platform">AI Platform</option>
+              <option value="Other / Not listed">Other / Not listed</option>
             </select>
             <div id="subFunctionRow" style="display:none;margin-top:10px;">
               <div class="font-mono" style="color:var(--text-muted);margin-bottom:6px;font-size:0.6rem;letter-spacing:0.15em;">YOUR SUB-TEAM — the group you sit in</div>
@@ -1871,188 +1881,124 @@
 
 
     const SUBFUNCTION_MAP = {
-      "Corporate & Operations": [
-            {
-                  "id": "Accounting",
-                  "label": "Accounting"
-            },
-            {
-                  "id": "Corporate Development",
-                  "label": "Corporate Development"
-            },
-            {
-                  "id": "Data & Insights",
-                  "label": "Data & Insights"
-            },
-            {
-                  "id": "Facilities",
-                  "label": "Facilities"
-            },
-            {
-                  "id": "Finance",
-                  "label": "Finance"
-            },
-            {
-                  "id": "Financial Planning & Analysis",
-                  "label": "Financial Planning & Analysis"
-            },
-            {
-                  "id": "IT & Internal Systems",
-                  "label": "IT & Internal Systems"
-            },
-            {
-                  "id": "Information Security",
-                  "label": "Information Security"
-            },
-            {
-                  "id": "Legal",
-                  "label": "Legal"
-            },
-            {
-                  "id": "Office of the CEO",
-                  "label": "Office of the CEO"
-            },
-            {
-                  "id": "Operations Strategy",
-                  "label": "Operations Strategy"
-            },
-            {
-                  "id": "Order Operations",
-                  "label": "Order Operations"
-            },
-            {
-                  "id": "People",
-                  "label": "People"
-            },
-            {
-                  "id": "People & Community — HR",
-                  "label": "People & Community — HR"
-            },
-            {
-                  "id": "Talent Acquisition",
-                  "label": "Talent Acquisition"
-            },
-            {
-                  "id": "Other / Not listed",
-                  "label": "Other / Not listed"
-            }
-      ],
-      "Customer Support & Care": [
-            {
-                  "id": "Care Guides",
-                  "label": "Care Guides"
-            },
-            {
-                  "id": "Coach Academy",
-                  "label": "Coach Academy"
-            },
-            {
-                  "id": "Customer Support Operations",
-                  "label": "Customer Support Operations"
-            },
-            {
-                  "id": "Operations",
-                  "label": "Operations"
-            },
-            {
-                  "id": "Other / Not listed",
-                  "label": "Other / Not listed"
-            }
-      ],
-      "Coaching Operations": [
-            {
-                  "id": "Coach Development",
-                  "label": "Coach Development"
-            },
-            {
-                  "id": "Coach Operations",
-                  "label": "Coach Operations"
-            },
-            {
-                  "id": "Coach Platform R&D",
-                  "label": "Coach Platform R&D"
-            },
-            {
-                  "id": "Coach Quality & Success",
-                  "label": "Coach Quality & Success"
-            },
-            {
-                  "id": "Cost of Sales Operations",
-                  "label": "Cost of Sales Operations"
-            },
-            {
-                  "id": "Deployment",
-                  "label": "Deployment"
-            },
-            {
-                  "id": "Forward Deployed Engineers",
-                  "label": "Forward Deployed Engineers"
-            },
-            {
-                  "id": "Partner Operations",
-                  "label": "Partner Operations"
-            },
-            {
-                  "id": "Technical Implementation",
-                  "label": "Technical Implementation"
-            },
-            {
-                  "id": "Other / Not listed",
-                  "label": "Other / Not listed"
-            }
-      ],
-      "Revenue & Client Services": [
+      "Field Operations": [
             {
                   "id": "Account Management",
                   "label": "Account Management"
             },
             {
-                  "id": "Account Management Leadership",
-                  "label": "Account Management Leadership"
+                  "id": "Channel Partnerships",
+                  "label": "Channel Partnerships"
             },
             {
-                  "id": "Alliances",
-                  "label": "Alliances"
+                  "id": "Customer Experience & Services",
+                  "label": "Customer Experience & Services"
             },
             {
-                  "id": "Center of Excellence",
-                  "label": "Center of Excellence"
+                  "id": "Enablement",
+                  "label": "Enablement"
             },
             {
-                  "id": "Client Service Partners",
-                  "label": "Client Service Partners"
+                  "id": "Field Operations — no sub-team",
+                  "label": "Field Operations — no sub-team"
             },
             {
-                  "id": "Customer Success",
-                  "label": "Customer Success"
+                  "id": "Global Accounts",
+                  "label": "Global Accounts"
             },
             {
-                  "id": "Global Account Management Team",
-                  "label": "Global Account Management Team"
-            },
-            {
-                  "id": "Revenue Operations",
-                  "label": "Revenue Operations"
+                  "id": "Government",
+                  "label": "Government"
             },
             {
                   "id": "Sales",
                   "label": "Sales"
             },
             {
-                  "id": "Sales Account Executives",
-                  "label": "Sales Account Executives"
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
+      ],
+      "Operations (COO org)": [
+            {
+                  "id": "CIO Office",
+                  "label": "CIO Office"
             },
             {
-                  "id": "Sales Leadership",
-                  "label": "Sales Leadership"
+                  "id": "Center for Daring Leadership",
+                  "label": "Center for Daring Leadership"
             },
             {
-                  "id": "Services",
-                  "label": "Services"
+                  "id": "GTM Operations",
+                  "label": "GTM Operations"
             },
             {
-                  "id": "Solutions Engineers",
-                  "label": "Solutions Engineers"
+                  "id": "IT & Security",
+                  "label": "IT & Security"
+            },
+            {
+                  "id": "Network Operations",
+                  "label": "Network Operations"
+            },
+            {
+                  "id": "Operations (COO org) — no sub-team",
+                  "label": "Operations (COO org) — no sub-team"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
+      ],
+      "Engineering": [
+            {
+                  "id": "Data and Insights",
+                  "label": "Data and Insights"
+            },
+            {
+                  "id": "Engineering",
+                  "label": "Engineering"
+            },
+            {
+                  "id": "Engineering — no sub-team",
+                  "label": "Engineering — no sub-team"
+            },
+            {
+                  "id": "Platform Engineering",
+                  "label": "Platform Engineering"
+            },
+            {
+                  "id": "R&D Product Operations",
+                  "label": "R&D Product Operations"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
+      ],
+      "People & Community": [
+            {
+                  "id": "Human Resources",
+                  "label": "Human Resources"
+            },
+            {
+                  "id": "Internal Communications",
+                  "label": "Internal Communications"
+            },
+            {
+                  "id": "Partnerships, Advisors & Community",
+                  "label": "Partnerships, Advisors & Community"
+            },
+            {
+                  "id": "People & Community — no sub-team",
+                  "label": "People & Community — no sub-team"
+            },
+            {
+                  "id": "Talent Acquisition",
+                  "label": "Talent Acquisition"
+            },
+            {
+                  "id": "Total Rewards & HR Operations",
+                  "label": "Total Rewards & HR Operations"
             },
             {
                   "id": "Other / Not listed",
@@ -2061,32 +2007,20 @@
       ],
       "Marketing": [
             {
-                  "id": "Corporate Communication",
-                  "label": "Corporate Communication"
+                  "id": "Creative Marketing",
+                  "label": "Creative Marketing"
             },
             {
-                  "id": "Corporate Marketing",
-                  "label": "Corporate Marketing"
+                  "id": "Marketing — EMEA",
+                  "label": "Marketing — EMEA"
             },
             {
-                  "id": "Creative & Experiences",
-                  "label": "Creative & Experiences"
+                  "id": "Marketing — no sub-team",
+                  "label": "Marketing — no sub-team"
             },
             {
-                  "id": "Marketing",
-                  "label": "Marketing"
-            },
-            {
-                  "id": "Marketing Operations",
-                  "label": "Marketing Operations"
-            },
-            {
-                  "id": "Partnerships",
-                  "label": "Partnerships"
-            },
-            {
-                  "id": "Product Led Growth",
-                  "label": "Product Led Growth"
+                  "id": "PR & Content",
+                  "label": "PR & Content"
             },
             {
                   "id": "Product Marketing",
@@ -2101,74 +2035,108 @@
                   "label": "Other / Not listed"
             }
       ],
-      "Product, Engineering & Labs": [
+      "Office of the CEO": [],
+      "Finance": [
             {
-                  "id": "Designers",
-                  "label": "Designers"
+                  "id": "Accounting",
+                  "label": "Accounting"
             },
             {
-                  "id": "Engineering",
-                  "label": "Engineering"
+                  "id": "Corporate FP&A",
+                  "label": "Corporate FP&A"
             },
             {
-                  "id": "Experience Architecture",
-                  "label": "Experience Architecture"
-            },
-            {
-                  "id": "Generative AI",
-                  "label": "Generative AI"
-            },
-            {
-                  "id": "Labs",
-                  "label": "Labs"
-            },
-            {
-                  "id": "Product Management",
-                  "label": "Product Management"
-            },
-            {
-                  "id": "Product Management — Apps",
-                  "label": "Product Management — Apps"
-            },
-            {
-                  "id": "Product Management — Platform",
-                  "label": "Product Management — Platform"
-            },
-            {
-                  "id": "Program Management",
-                  "label": "Program Management"
-            },
-            {
-                  "id": "Research Scientists",
-                  "label": "Research Scientists"
-            },
-            {
-                  "id": "Research Services",
-                  "label": "Research Services"
-            },
-            {
-                  "id": "Studios",
-                  "label": "Studios"
+                  "id": "Finance — no sub-team",
+                  "label": "Finance — no sub-team"
             },
             {
                   "id": "Other / Not listed",
                   "label": "Other / Not listed"
             }
       ],
-      "CE&S": [
+      "Legal": [
             {
-                  "id": "CE&S",
-                  "label": "CE&S"
+                  "id": "Legal — AI, Product, Privacy & Security",
+                  "label": "Legal — AI, Product, Privacy & Security"
             },
             {
-                  "id": "Client Partnership & Behavioral Science",
-                  "label": "Client Partnership & Behavioral Science"
+                  "id": "Legal — Commercial",
+                  "label": "Legal — Commercial"
+            },
+            {
+                  "id": "Legal — no sub-team",
+                  "label": "Legal — no sub-team"
             },
             {
                   "id": "Other / Not listed",
                   "label": "Other / Not listed"
             }
-      ]
+      ],
+      "Labs": [],
+      "Product": [
+            {
+                  "id": "Learning Experience Design",
+                  "label": "Learning Experience Design"
+            },
+            {
+                  "id": "Product Management",
+                  "label": "Product Management"
+            },
+            {
+                  "id": "Product — no sub-team",
+                  "label": "Product — no sub-team"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
+      ],
+      "Product Marketing": [
+            {
+                  "id": "Direct-to-Consumer",
+                  "label": "Direct-to-Consumer"
+            },
+            {
+                  "id": "Product Marketing — no sub-team",
+                  "label": "Product Marketing — no sub-team"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
+      ],
+      "Product Design": [],
+      "Studios (Interactive)": [],
+      "Business Operations & Strategy": [
+            {
+                  "id": "Business Operations & Strategy — no sub-team",
+                  "label": "Business Operations & Strategy — no sub-team"
+            },
+            {
+                  "id": "Human Resources — Europe",
+                  "label": "Human Resources — Europe"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
+      ],
+      "Strategy & Growth": [
+            {
+                  "id": "Research Scientists",
+                  "label": "Research Scientists"
+            },
+            {
+                  "id": "Strategy & Growth — no sub-team",
+                  "label": "Strategy & Growth — no sub-team"
+            },
+            {
+                  "id": "Other / Not listed",
+                  "label": "Other / Not listed"
+            }
+      ],
+      "AI Platform": [],
+      "Other / Not listed": []
 };
 
 
